@@ -37,10 +37,14 @@ const Index = () => {
   const [siteTitle, setSiteTitle] = useState('VNHL');
   const [siteSubtitle, setSiteSubtitle] = useState('Виртуальная Национальная Хоккейная Лига');
   const [siteIcon, setSiteIcon] = useState('Trophy');
+  const [customIconUrl, setCustomIconUrl] = useState('');
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [tempTitle, setTempTitle] = useState('');
   const [tempSubtitle, setTempSubtitle] = useState('');
   const [tempIcon, setTempIcon] = useState('');
+  const [tempCustomIconUrl, setTempCustomIconUrl] = useState('');
+  const [iconType, setIconType] = useState<'lucide' | 'custom'>('lucide');
+  const [tempIconType, setTempIconType] = useState<'lucide' | 'custom'>('lucide');
 
   useEffect(() => {
     const savedEastern = localStorage.getItem('easternTeams');
@@ -51,6 +55,8 @@ const Index = () => {
     const savedSiteTitle = localStorage.getItem('siteTitle');
     const savedSiteSubtitle = localStorage.getItem('siteSubtitle');
     const savedSiteIcon = localStorage.getItem('siteIcon');
+    const savedCustomIconUrl = localStorage.getItem('customIconUrl');
+    const savedIconType = localStorage.getItem('iconType');
     const adminAuth = sessionStorage.getItem('adminAuth');
 
     if (savedEastern) setEasternTeams(JSON.parse(savedEastern));
@@ -61,6 +67,8 @@ const Index = () => {
     if (savedSiteTitle) setSiteTitle(savedSiteTitle);
     if (savedSiteSubtitle) setSiteSubtitle(savedSiteSubtitle);
     if (savedSiteIcon) setSiteIcon(savedSiteIcon);
+    if (savedCustomIconUrl) setCustomIconUrl(savedCustomIconUrl);
+    if (savedIconType) setIconType(savedIconType as 'lucide' | 'custom');
     if (adminAuth === 'true') setIsAdmin(true);
   }, []);
 
@@ -103,6 +111,8 @@ const Index = () => {
     setTempTitle(siteTitle);
     setTempSubtitle(siteSubtitle);
     setTempIcon(siteIcon);
+    setTempCustomIconUrl(customIconUrl);
+    setTempIconType(iconType);
     setIsEditDialogOpen(true);
   };
 
@@ -110,9 +120,13 @@ const Index = () => {
     setSiteTitle(tempTitle);
     setSiteSubtitle(tempSubtitle);
     setSiteIcon(tempIcon);
+    setCustomIconUrl(tempCustomIconUrl);
+    setIconType(tempIconType);
     localStorage.setItem('siteTitle', tempTitle);
     localStorage.setItem('siteSubtitle', tempSubtitle);
     localStorage.setItem('siteIcon', tempIcon);
+    localStorage.setItem('customIconUrl', tempCustomIconUrl);
+    localStorage.setItem('iconType', tempIconType);
     setIsEditDialogOpen(false);
   };
 
@@ -122,7 +136,11 @@ const Index = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Icon name={siteIcon} size={40} className="text-primary" />
+              {iconType === 'custom' && customIconUrl ? (
+                <img src={customIconUrl} alt="Logo" className="w-10 h-10 object-contain" />
+              ) : (
+                <Icon name={siteIcon} size={40} className="text-primary" />
+              )}
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-4xl font-bold">{siteTitle}</h1>
@@ -199,21 +217,64 @@ const Index = () => {
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Название иконки (lucide-react)</label>
+              <label className="text-sm font-medium">Тип иконки</label>
               <div className="flex gap-2">
-                <Input
-                  value={tempIcon}
-                  onChange={(e) => setTempIcon(e.target.value)}
-                  placeholder="Trophy"
-                />
-                <div className="flex items-center justify-center w-12 h-12 border rounded-lg">
-                  <Icon name={tempIcon} size={24} className="text-primary" />
-                </div>
+                <Button
+                  type="button"
+                  variant={tempIconType === 'lucide' ? 'default' : 'outline'}
+                  onClick={() => setTempIconType('lucide')}
+                  className="flex-1"
+                >
+                  Lucide иконка
+                </Button>
+                <Button
+                  type="button"
+                  variant={tempIconType === 'custom' ? 'default' : 'outline'}
+                  onClick={() => setTempIconType('custom')}
+                  className="flex-1"
+                >
+                  Своя иконка
+                </Button>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Примеры: Trophy, Medal, Award, Flame, Zap, Star
-              </p>
             </div>
+
+            {tempIconType === 'lucide' ? (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Название иконки (lucide-react)</label>
+                <div className="flex gap-2">
+                  <Input
+                    value={tempIcon}
+                    onChange={(e) => setTempIcon(e.target.value)}
+                    placeholder="Trophy"
+                  />
+                  <div className="flex items-center justify-center w-12 h-12 border rounded-lg">
+                    <Icon name={tempIcon} size={24} className="text-primary" />
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Примеры: Trophy, Medal, Award, Flame, Zap, Star
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">URL изображения</label>
+                <div className="flex gap-2">
+                  <Input
+                    value={tempCustomIconUrl}
+                    onChange={(e) => setTempCustomIconUrl(e.target.value)}
+                    placeholder="https://example.com/logo.png"
+                  />
+                  {tempCustomIconUrl && (
+                    <div className="flex items-center justify-center w-12 h-12 border rounded-lg overflow-hidden">
+                      <img src={tempCustomIconUrl} alt="Preview" className="w-full h-full object-contain" />
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Вставьте ссылку на изображение вашего логотипа
+                </p>
+              </div>
+            )}
             <div className="flex justify-end gap-2 pt-4">
               <Button
                 variant="outline"
