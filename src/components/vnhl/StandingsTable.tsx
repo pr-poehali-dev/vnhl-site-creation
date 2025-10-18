@@ -35,6 +35,16 @@ const StandingsTable = ({
   onDragOver,
   onDrop,
 }: StandingsTableProps) => {
+  if (!teams || teams.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <Icon name="Users" size={64} className="text-muted-foreground/50 mb-4" />
+        <h3 className="text-2xl font-bold mb-2">Команды ещё не выбраны</h3>
+        <p className="text-muted-foreground text-lg">Ожидайте, таблица скоро появится</p>
+      </div>
+    );
+  }
+
   return (
     <Table>
       <TableHeader>

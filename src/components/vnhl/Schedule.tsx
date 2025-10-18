@@ -15,6 +15,16 @@ interface ScheduleProps {
 }
 
 const Schedule = ({ games }: ScheduleProps) => {
+  if (!games || games.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <Icon name="Calendar" size={64} className="text-muted-foreground/50 mb-4" />
+        <h3 className="text-2xl font-bold mb-2">Матчей ещё нет</h3>
+        <p className="text-muted-foreground text-lg">Ожидайте, скоро они появятся</p>
+      </div>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
