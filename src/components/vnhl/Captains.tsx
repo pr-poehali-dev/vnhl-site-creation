@@ -176,7 +176,7 @@ const Captains = ({ captains, isAdmin, onUpdate, emptyMessage, onUpdateEmptyMess
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         {captains.map((captain) => (
           <Card key={captain.id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <CardContent className="p-0">
