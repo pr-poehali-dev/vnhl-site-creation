@@ -97,3 +97,38 @@ export const defaultRules = [
     content: 'Максимум 23 игрока в заявке: 20 полевых + 3 вратаря. На лёд - максимум 6 игроков (включая вратаря).',
   },
 ];
+
+export const defaultCaptains = [
+  {
+    id: '1',
+    name: 'Connor McDavid',
+    team: 'Edmonton Oilers',
+    number: 97,
+    position: 'C',
+    image: '',
+  },
+  {
+    id: '2',
+    name: 'Sidney Crosby',
+    team: 'Pittsburgh Penguins',
+    number: 87,
+    position: 'C',
+    image: '',
+  },
+  {
+    id: '3',
+    name: 'Nathan MacKinnon',
+    team: 'Colorado Avalanche',
+    number: 29,
+    position: 'C',
+    image: '',
+  },
+  {
+    id: '4',
+    name: 'Aleksander Barkov',
+    team: 'Florida Panthers',
+    number: 16,
+    position: 'C',
+    image: '',
+  },
+];

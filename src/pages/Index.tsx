@@ -22,7 +22,9 @@ import {
   defaultUpcomingGames,
   defaultPlayoffBracket,
   defaultRules,
+  defaultCaptains,
 } from '@/components/vnhl/defaultData';
+import Captains from '@/components/vnhl/Captains';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -32,6 +34,7 @@ const Index = () => {
   const [upcomingGames, setUpcomingGames] = useState(defaultUpcomingGames);
   const [playoffBracket, setPlayoffBracket] = useState(defaultPlayoffBracket);
   const [rules, setRules] = useState(defaultRules);
+  const [captains, setCaptains] = useState(defaultCaptains);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [siteTitle, setSiteTitle] = useState('VNHL');
@@ -52,6 +55,7 @@ const Index = () => {
     const savedGames = localStorage.getItem('upcomingGames');
     const savedPlayoff = localStorage.getItem('playoffBracket');
     const savedRules = localStorage.getItem('rules');
+    const savedCaptains = localStorage.getItem('captains');
     const savedSiteTitle = localStorage.getItem('siteTitle');
     const savedSiteSubtitle = localStorage.getItem('siteSubtitle');
     const savedSiteIcon = localStorage.getItem('siteIcon');
@@ -64,6 +68,7 @@ const Index = () => {
     if (savedGames) setUpcomingGames(JSON.parse(savedGames));
     if (savedPlayoff) setPlayoffBracket(JSON.parse(savedPlayoff));
     if (savedRules) setRules(JSON.parse(savedRules));
+    if (savedCaptains) setCaptains(JSON.parse(savedCaptains));
     if (savedSiteTitle) setSiteTitle(savedSiteTitle);
     if (savedSiteSubtitle) setSiteSubtitle(savedSiteSubtitle);
     if (savedSiteIcon) setSiteIcon(savedSiteIcon);
@@ -327,7 +332,7 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="standings" className="gap-2">
               <Icon name="BarChart3" size={18} />
               Таблицы
@@ -339,6 +344,10 @@ const Index = () => {
             <TabsTrigger value="schedule" className="gap-2">
               <Icon name="Calendar" size={18} />
               Календарь
+            </TabsTrigger>
+            <TabsTrigger value="captains" className="gap-2">
+              <Icon name="Users" size={18} />
+              Кэпы
             </TabsTrigger>
             <TabsTrigger value="rules" className="gap-2">
               <Icon name="BookOpen" size={18} />
@@ -401,6 +410,17 @@ const Index = () => {
 
           <TabsContent value="schedule">
             <Schedule games={upcomingGames} />
+          </TabsContent>
+
+          <TabsContent value="captains">
+            <Captains
+              captains={captains}
+              isAdmin={isAdmin}
+              onUpdate={(updated) => {
+                setCaptains(updated);
+                localStorage.setItem('captains', JSON.stringify(updated));
+              }}
+            />
           </TabsContent>
 
           <TabsContent value="rules">

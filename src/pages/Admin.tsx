@@ -11,7 +11,8 @@ import TeamEditor from '@/components/admin/TeamEditor';
 import GamesEditor from '@/components/admin/GamesEditor';
 import PlayoffEditor from '@/components/admin/PlayoffEditor';
 import RulesEditor from '@/components/admin/RulesEditor';
-import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules } from '@/components/vnhl/defaultData';
+import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains } from '@/components/vnhl/defaultData';
+import CaptainsEditor from '@/components/admin/CaptainsEditor';
 
 const ADMIN_PASSWORD = '55935589k';
 
@@ -46,6 +47,11 @@ const Admin = () => {
     return saved ? JSON.parse(saved) : defaultRules;
   });
 
+  const [captains, setCaptains] = useState(() => {
+    const saved = localStorage.getItem('captains');
+    return saved ? JSON.parse(saved) : defaultCaptains;
+  });
+
   useEffect(() => {
     const auth = sessionStorage.getItem('adminAuth');
     if (auth === 'true') {
@@ -72,6 +78,10 @@ const Admin = () => {
   useEffect(() => {
     localStorage.setItem('rules', JSON.stringify(rules));
   }, [rules]);
+
+  useEffect(() => {
+    localStorage.setItem('captains', JSON.stringify(captains));
+  }, [captains]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,6 +168,22 @@ const Admin = () => {
     setRules([...rules, rule]);
   };
 
+  const updateCaptain = (index: number, updatedCaptain: any) => {
+    const updated = [...captains];
+    updated[index] = updatedCaptain;
+    setCaptains(updated);
+    toast.success('Капитан обновлён');
+  };
+
+  const deleteCaptain = (index: number) => {
+    setCaptains(captains.filter((_, i) => i !== index));
+    toast.success('Капитан удалён');
+  };
+
+  const addCaptain = (captain: any) => {
+    setCaptains([...captains, captain]);
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -221,6 +247,7 @@ const Admin = () => {
                     setUpcomingGames(defaultUpcomingGames);
                     setPlayoffBracket(defaultPlayoffBracket);
                     setRules(defaultRules);
+                    setCaptains(defaultCaptains);
                     toast.success('Данные сброшены');
                   }
                 }}
@@ -243,7 +270,7 @@ const Admin = () => {
 
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-5 mb-8">
             <TabsTrigger value="teams" className="gap-2">
               <Icon name="Users" size={18} />
               Команды
@@ -255,6 +282,10 @@ const Admin = () => {
             <TabsTrigger value="playoff" className="gap-2">
               <Icon name="Zap" size={18} />
               Плей-офф
+            </TabsTrigger>
+            <TabsTrigger value="captains" className="gap-2">
+              <Icon name="Shield" size={18} />
+              Кэпы
             </TabsTrigger>
             <TabsTrigger value="rules" className="gap-2">
               <Icon name="BookOpen" size={18} />
@@ -285,6 +316,15 @@ const Admin = () => {
             <PlayoffEditor
               playoffBracket={playoffBracket}
               onUpdatePlayoff={updatePlayoff}
+            />
+          </TabsContent>
+
+          <TabsContent value="captains">
+            <CaptainsEditor
+              captains={captains}
+              onUpdateCaptain={updateCaptain}
+              onDeleteCaptain={deleteCaptain}
+              onAddCaptain={addCaptain}
             />
           </TabsContent>
 
