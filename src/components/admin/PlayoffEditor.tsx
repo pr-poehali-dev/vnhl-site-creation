@@ -71,6 +71,10 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
         score2: 0,
       });
     } else {
+      if (!updated[conference]) updated[conference] = {};
+      if (!updated[conference][round as 'round1' | 'round2' | 'round3' | 'final']) {
+        updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'] = [];
+      }
       updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'].push({
         team1: '',
         team2: '',
