@@ -11,7 +11,7 @@ import TeamEditor from '@/components/admin/TeamEditor';
 import GamesEditor from '@/components/admin/GamesEditor';
 import PlayoffEditor from '@/components/admin/PlayoffEditor';
 import RulesEditor from '@/components/admin/RulesEditor';
-import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains } from '@/components/vnhl/defaultData';
+import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains, defaultCaptainsEmptyMessage } from '@/components/vnhl/defaultData';
 import CaptainsEditor from '@/components/admin/CaptainsEditor';
 
 const ADMIN_PASSWORD = '55935589k';
@@ -52,6 +52,11 @@ const Admin = () => {
     return saved ? JSON.parse(saved) : defaultCaptains;
   });
 
+  const [captainsEmptyMessage, setCaptainsEmptyMessage] = useState(() => {
+    const saved = localStorage.getItem('captainsEmptyMessage');
+    return saved ? JSON.parse(saved) : defaultCaptainsEmptyMessage;
+  });
+
   useEffect(() => {
     const auth = sessionStorage.getItem('adminAuth');
     if (auth === 'true') {
@@ -82,6 +87,10 @@ const Admin = () => {
   useEffect(() => {
     localStorage.setItem('captains', JSON.stringify(captains));
   }, [captains]);
+
+  useEffect(() => {
+    localStorage.setItem('captainsEmptyMessage', JSON.stringify(captainsEmptyMessage));
+  }, [captainsEmptyMessage]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -248,6 +257,7 @@ const Admin = () => {
                     setPlayoffBracket(defaultPlayoffBracket);
                     setRules(defaultRules);
                     setCaptains(defaultCaptains);
+                    setCaptainsEmptyMessage(defaultCaptainsEmptyMessage);
                     toast.success('Данные сброшены');
                   }
                 }}

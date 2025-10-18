@@ -23,6 +23,7 @@ import {
   defaultPlayoffBracket,
   defaultRules,
   defaultCaptains,
+  defaultCaptainsEmptyMessage,
 } from '@/components/vnhl/defaultData';
 import Captains from '@/components/vnhl/Captains';
 
@@ -35,6 +36,7 @@ const Index = () => {
   const [playoffBracket, setPlayoffBracket] = useState(defaultPlayoffBracket);
   const [rules, setRules] = useState(defaultRules);
   const [captains, setCaptains] = useState(defaultCaptains);
+  const [captainsEmptyMessage, setCaptainsEmptyMessage] = useState(defaultCaptainsEmptyMessage);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [siteTitle, setSiteTitle] = useState('VNHL');
@@ -56,6 +58,7 @@ const Index = () => {
     const savedPlayoff = localStorage.getItem('playoffBracket');
     const savedRules = localStorage.getItem('rules');
     const savedCaptains = localStorage.getItem('captains');
+    const savedCaptainsEmptyMessage = localStorage.getItem('captainsEmptyMessage');
     const savedSiteTitle = localStorage.getItem('siteTitle');
     const savedSiteSubtitle = localStorage.getItem('siteSubtitle');
     const savedSiteIcon = localStorage.getItem('siteIcon');
@@ -69,6 +72,7 @@ const Index = () => {
     if (savedPlayoff) setPlayoffBracket(JSON.parse(savedPlayoff));
     if (savedRules) setRules(JSON.parse(savedRules));
     if (savedCaptains) setCaptains(JSON.parse(savedCaptains));
+    if (savedCaptainsEmptyMessage) setCaptainsEmptyMessage(JSON.parse(savedCaptainsEmptyMessage));
     if (savedSiteTitle) setSiteTitle(savedSiteTitle);
     if (savedSiteSubtitle) setSiteSubtitle(savedSiteSubtitle);
     if (savedSiteIcon) setSiteIcon(savedSiteIcon);
@@ -419,6 +423,11 @@ const Index = () => {
               onUpdate={(updated) => {
                 setCaptains(updated);
                 localStorage.setItem('captains', JSON.stringify(updated));
+              }}
+              emptyMessage={captainsEmptyMessage}
+              onUpdateEmptyMessage={(updated) => {
+                setCaptainsEmptyMessage(updated);
+                localStorage.setItem('captainsEmptyMessage', JSON.stringify(updated));
               }}
             />
           </TabsContent>

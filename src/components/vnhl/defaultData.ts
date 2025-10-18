@@ -132,3 +132,8 @@ export const defaultCaptains = [
     image: '',
   },
 ];
+
+export const defaultCaptainsEmptyMessage = {
+  title: 'Сейчас нет Капитанов Команд',
+  subtitle: 'Ожидайте, они скоро появятся',
+};

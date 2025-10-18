@@ -22,14 +22,23 @@ interface Captain {
   image: string;
 }
 
+interface EmptyMessage {
+  title: string;
+  subtitle: string;
+}
+
 interface CaptainsProps {
   captains: Captain[];
   isAdmin: boolean;
   onUpdate: (captains: Captain[]) => void;
+  emptyMessage: EmptyMessage;
+  onUpdateEmptyMessage: (message: EmptyMessage) => void;
 }
 
-const Captains = ({ captains, isAdmin, onUpdate }: CaptainsProps) => {
+const Captains = ({ captains, isAdmin, onUpdate, emptyMessage, onUpdateEmptyMessage }: CaptainsProps) => {
   const [editCaptain, setEditCaptain] = useState<Captain | null>(null);
+  const [isEditMessageOpen, setIsEditMessageOpen] = useState(false);
+  const [tempMessage, setTempMessage] = useState(emptyMessage);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newCaptain, setNewCaptain] = useState({
     name: '',
@@ -290,10 +299,60 @@ const Captains = ({ captains, isAdmin, onUpdate }: CaptainsProps) => {
 
       {captains.length === 0 && (
         <Card>
-          <CardContent className="p-12 text-center">
+          <CardContent className="p-12 text-center relative">
+            {isAdmin && (
+              <Dialog open={isEditMessageOpen} onOpenChange={setIsEditMessageOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="absolute top-4 right-4"
+                    onClick={() => {
+                      setTempMessage(emptyMessage);
+                      setIsEditMessageOpen(true);
+                    }}
+                  >
+                    <Icon name="Pencil" size={16} />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Редактировать сообщение</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Заголовок</Label>
+                      <Input
+                        value={tempMessage.title}
+                        onChange={(e) => setTempMessage({ ...tempMessage, title: e.target.value })}
+                        placeholder="Сейчас нет Капитанов Команд"
+                      />
+                    </div>
+                    <div>
+                      <Label>Подзаголовок</Label>
+                      <Input
+                        value={tempMessage.subtitle}
+                        onChange={(e) => setTempMessage({ ...tempMessage, subtitle: e.target.value })}
+                        placeholder="Ожидайте, они скоро появятся"
+                      />
+                    </div>
+                    <Button
+                      onClick={() => {
+                        onUpdateEmptyMessage(tempMessage);
+                        setIsEditMessageOpen(false);
+                        toast.success('Сообщение обновлено');
+                      }}
+                      className="w-full"
+                    >
+                      Сохранить
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            )}
             <Icon name="Users" size={48} className="mx-auto mb-4 text-muted-foreground/30" />
-            <h3 className="text-xl font-semibold mb-2">Сейчас нет Капитанов Команд</h3>
-            <p className="text-muted-foreground">Ожидайте, они скоро появятся</p>
+            <h3 className="text-xl font-semibold mb-2">{emptyMessage.title}</h3>
+            <p className="text-muted-foreground">{emptyMessage.subtitle}</p>
           </CardContent>
         </Card>
       )}
