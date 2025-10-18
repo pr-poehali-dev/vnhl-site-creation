@@ -24,6 +24,7 @@ interface PlayoffBracket {
     round2: PlayoffMatch[];
     round3: PlayoffMatch[];
   };
+  final?: PlayoffMatch[];
   champion?: string;
 }
 
@@ -36,38 +37,61 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
   const [championName, setChampionName] = useState(playoffBracket.champion || '');
 
   const updateMatch = (
-    conference: 'eastern' | 'western',
-    round: 'round1' | 'round2' | 'round3',
+    conference: 'eastern' | 'western' | 'final',
+    round: 'round1' | 'round2' | 'round3' | 'final',
     index: number,
     field: keyof PlayoffMatch,
     value: string | number
   ) => {
     const updated = { ...playoffBracket };
-    updated[conference][round][index] = {
-      ...updated[conference][round][index],
-      [field]: value,
-    };
+    if (conference === 'final') {
+      if (!updated.final) updated.final = [];
+      updated.final[index] = {
+        ...updated.final[index],
+        [field]: value,
+      };
+    } else {
+      updated[conference][round as 'round1' | 'round2' | 'round3'][index] = {
+        ...updated[conference][round as 'round1' | 'round2' | 'round3'][index],
+        [field]: value,
+      };
+    }
     onUpdatePlayoff(updated);
   };
 
-  const addMatch = (conference: 'eastern' | 'western', round: 'round1' | 'round2' | 'round3') => {
+  const addMatch = (conference: 'eastern' | 'western' | 'final', round: 'round1' | 'round2' | 'round3' | 'final') => {
     const updated = { ...playoffBracket };
-    if (!updated[conference][round]) {
-      updated[conference][round] = [];
+    if (conference === 'final') {
+      if (!updated.final) updated.final = [];
+      updated.final.push({
+        team1: '',
+        team2: '',
+        score1: 0,
+        score2: 0,
+      });
+    } else {
+      if (!updated[conference][round as 'round1' | 'round2' | 'round3']) {
+        updated[conference][round as 'round1' | 'round2' | 'round3'] = [];
+      }
+      updated[conference][round as 'round1' | 'round2' | 'round3'].push({
+        team1: '',
+        team2: '',
+        score1: 0,
+        score2: 0,
+      });
     }
-    updated[conference][round].push({
-      team1: '',
-      team2: '',
-      score1: 0,
-      score2: 0,
-    });
     onUpdatePlayoff(updated);
     toast.success('Матч добавлен');
   };
 
-  const deleteMatch = (conference: 'eastern' | 'western', round: 'round1' | 'round2' | 'round3', index: number) => {
+  const deleteMatch = (conference: 'eastern' | 'western' | 'final', round: 'round1' | 'round2' | 'round3' | 'final', index: number) => {
     const updated = { ...playoffBracket };
-    updated[conference][round] = updated[conference][round].filter((_, i) => i !== index);
+    if (conference === 'final' && updated.final) {
+      updated.final = updated.final.filter((_, i) => i !== index);
+    } else if (conference !== 'final') {
+      updated[conference][round as 'round1' | 'round2' | 'round3'] = 
+        updated[conference][round as 'round1' | 'round2' | 'round3'].filter((_, i) => i !== index);
+    }
     onUpdatePlayoff(updated);
     toast.success('Матч удалён');
   };
@@ -88,8 +112,8 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
 
   const renderMatchInputs = (
     match: PlayoffMatch,
-    conference: 'eastern' | 'western',
-    round: 'round1' | 'round2' | 'round3',
+    conference: 'eastern' | 'western' | 'final',
+    round: 'round1' | 'round2' | 'round3' | 'final',
     index: number
   ) => (
     <div className="p-4 border rounded-lg space-y-3 bg-card/50">
@@ -152,8 +176,8 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
   );
 
   const renderRound = (
-    conference: 'eastern' | 'western',
-    round: 'round1' | 'round2' | 'round3',
+    conference: 'eastern' | 'western' | 'final',
+    round: 'round1' | 'round2' | 'round3' | 'final',
     title: string,
     matches: PlayoffMatch[] = []
   ) => (
@@ -214,6 +238,18 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
         <CardHeader>
           <CardTitle className="flex items-center gap-2 justify-center text-xl">
             <Icon name="Trophy" size={28} className="text-primary" />
+            Главный Финал VNHL
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {renderRound('final', 'final', 'Финальный матч', playoffBracket.final || [])}
+        </CardContent>
+      </Card>
+
+      <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 justify-center text-xl">
+            <Icon name="Award" size={28} className="text-primary" />
             Чемпион VNHL
           </CardTitle>
         </CardHeader>
@@ -241,7 +277,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
               )}
             </div>
             {playoffBracket.champion && (
-              <div className="text-center py-4 bg-primary/10 rounded-lg">
+              <div className="text-center py-4 bg-primary/10 rounded-lg border border-primary/20">
                 <p className="text-sm text-muted-foreground mb-1">Текущий чемпион:</p>
                 <p className="text-2xl font-bold text-primary">{playoffBracket.champion}</p>
               </div>

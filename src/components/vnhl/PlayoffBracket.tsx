@@ -19,6 +19,7 @@ interface PlayoffBracketProps {
   bracket: {
     eastern: ConferenceBracket;
     western: ConferenceBracket;
+    final?: PlayoffMatch[];
     champion?: string;
   };
 }
@@ -91,6 +92,7 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
     return (
       checkRounds(bracket.eastern) ||
       checkRounds(bracket.western) ||
+      (bracket.final && bracket.final.length > 0) ||
       !!bracket.champion
     );
   };
@@ -136,6 +138,22 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           </CardContent>
         </Card>
       </div>
+
+      {bracket?.final && bracket.final.length > 0 && (
+        <Card className="border-2 border-primary">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 justify-center text-2xl">
+              <Icon name="Trophy" size={32} className="text-primary" />
+              Главный Финал VNHL
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="max-w-md mx-auto">
+              {renderRound('Финал', bracket.final)}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {bracket?.champion && (
         <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5">

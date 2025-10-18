@@ -60,6 +60,9 @@ export const defaultPlayoffBracket = {
       { team1: 'Vegas Golden Knights', team2: 'Dallas Stars', score1: 4, score2: 2 },
     ],
   },
+  final: [
+    { team1: 'Boston Bruins', team2: 'Vegas Golden Knights', score1: 2, score2: 4 },
+  ],
   champion: 'Vegas Golden Knights',
 };
 
