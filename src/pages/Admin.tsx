@@ -11,7 +11,7 @@ import TeamEditor from '@/components/admin/TeamEditor';
 import GamesEditor from '@/components/admin/GamesEditor';
 import PlayoffEditor from '@/components/admin/PlayoffEditor';
 import RulesEditor from '@/components/admin/RulesEditor';
-import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains, defaultCaptainsEmptyMessage } from '@/components/vnhl/defaultData';
+import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains, defaultCaptainsEmptyMessage, defaultScheduleEmptyMessage, defaultRulesEmptyMessage } from '@/components/vnhl/defaultData';
 import CaptainsEditor from '@/components/admin/CaptainsEditor';
 
 const ADMIN_PASSWORD = '55935589k';
@@ -57,6 +57,16 @@ const Admin = () => {
     return saved ? JSON.parse(saved) : defaultCaptainsEmptyMessage;
   });
 
+  const [scheduleEmptyMessage, setScheduleEmptyMessage] = useState(() => {
+    const saved = localStorage.getItem('scheduleEmptyMessage');
+    return saved ? JSON.parse(saved) : defaultScheduleEmptyMessage;
+  });
+
+  const [rulesEmptyMessage, setRulesEmptyMessage] = useState(() => {
+    const saved = localStorage.getItem('rulesEmptyMessage');
+    return saved ? JSON.parse(saved) : defaultRulesEmptyMessage;
+  });
+
   useEffect(() => {
     const auth = sessionStorage.getItem('adminAuth');
     if (auth === 'true') {
@@ -91,6 +101,14 @@ const Admin = () => {
   useEffect(() => {
     localStorage.setItem('captainsEmptyMessage', JSON.stringify(captainsEmptyMessage));
   }, [captainsEmptyMessage]);
+
+  useEffect(() => {
+    localStorage.setItem('scheduleEmptyMessage', JSON.stringify(scheduleEmptyMessage));
+  }, [scheduleEmptyMessage]);
+
+  useEffect(() => {
+    localStorage.setItem('rulesEmptyMessage', JSON.stringify(rulesEmptyMessage));
+  }, [rulesEmptyMessage]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -258,6 +276,8 @@ const Admin = () => {
                     setRules(defaultRules);
                     setCaptains(defaultCaptains);
                     setCaptainsEmptyMessage(defaultCaptainsEmptyMessage);
+                    setScheduleEmptyMessage(defaultScheduleEmptyMessage);
+                    setRulesEmptyMessage(defaultRulesEmptyMessage);
                     toast.success('Данные сброшены');
                   }
                 }}

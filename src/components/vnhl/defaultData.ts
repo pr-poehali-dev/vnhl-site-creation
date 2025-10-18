@@ -137,3 +137,13 @@ export const defaultCaptainsEmptyMessage = {
   title: 'Сейчас нет Капитанов Команд',
   subtitle: 'Ожидайте, они скоро появятся',
 };
+
+export const defaultScheduleEmptyMessage = {
+  title: 'Матчей ещё нет',
+  subtitle: 'Ожидайте, скоро они появятся',
+};
+
+export const defaultRulesEmptyMessage = {
+  title: 'На данный момент правил нет',
+  subtitle: 'Ожидайте, они скоро тут появятся',
+};

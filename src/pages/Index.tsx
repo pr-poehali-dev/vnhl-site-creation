@@ -24,6 +24,8 @@ import {
   defaultRules,
   defaultCaptains,
   defaultCaptainsEmptyMessage,
+  defaultScheduleEmptyMessage,
+  defaultRulesEmptyMessage,
 } from '@/components/vnhl/defaultData';
 import Captains from '@/components/vnhl/Captains';
 
@@ -37,6 +39,8 @@ const Index = () => {
   const [rules, setRules] = useState(defaultRules);
   const [captains, setCaptains] = useState(defaultCaptains);
   const [captainsEmptyMessage, setCaptainsEmptyMessage] = useState(defaultCaptainsEmptyMessage);
+  const [scheduleEmptyMessage, setScheduleEmptyMessage] = useState(defaultScheduleEmptyMessage);
+  const [rulesEmptyMessage, setRulesEmptyMessage] = useState(defaultRulesEmptyMessage);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [siteTitle, setSiteTitle] = useState('VNHL');
@@ -59,6 +63,8 @@ const Index = () => {
     const savedRules = localStorage.getItem('rules');
     const savedCaptains = localStorage.getItem('captains');
     const savedCaptainsEmptyMessage = localStorage.getItem('captainsEmptyMessage');
+    const savedScheduleEmptyMessage = localStorage.getItem('scheduleEmptyMessage');
+    const savedRulesEmptyMessage = localStorage.getItem('rulesEmptyMessage');
     const savedSiteTitle = localStorage.getItem('siteTitle');
     const savedSiteSubtitle = localStorage.getItem('siteSubtitle');
     const savedSiteIcon = localStorage.getItem('siteIcon');
@@ -73,6 +79,8 @@ const Index = () => {
     if (savedRules) setRules(JSON.parse(savedRules));
     if (savedCaptains) setCaptains(JSON.parse(savedCaptains));
     if (savedCaptainsEmptyMessage) setCaptainsEmptyMessage(JSON.parse(savedCaptainsEmptyMessage));
+    if (savedScheduleEmptyMessage) setScheduleEmptyMessage(JSON.parse(savedScheduleEmptyMessage));
+    if (savedRulesEmptyMessage) setRulesEmptyMessage(JSON.parse(savedRulesEmptyMessage));
     if (savedSiteTitle) setSiteTitle(savedSiteTitle);
     if (savedSiteSubtitle) setSiteSubtitle(savedSiteSubtitle);
     if (savedSiteIcon) setSiteIcon(savedSiteIcon);
@@ -413,7 +421,15 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="schedule">
-            <Schedule games={upcomingGames} />
+            <Schedule
+              games={upcomingGames}
+              isAdmin={isAdmin}
+              emptyMessage={scheduleEmptyMessage}
+              onUpdateEmptyMessage={(updated) => {
+                setScheduleEmptyMessage(updated);
+                localStorage.setItem('scheduleEmptyMessage', JSON.stringify(updated));
+              }}
+            />
           </TabsContent>
 
           <TabsContent value="captains">
@@ -433,7 +449,15 @@ const Index = () => {
           </TabsContent>
 
           <TabsContent value="rules">
-            <Rules rules={rules} />
+            <Rules
+              rules={rules}
+              isAdmin={isAdmin}
+              emptyMessage={rulesEmptyMessage}
+              onUpdateEmptyMessage={(updated) => {
+                setRulesEmptyMessage(updated);
+                localStorage.setItem('rulesEmptyMessage', JSON.stringify(updated));
+              }}
+            />
           </TabsContent>
         </Tabs>
       </main>
