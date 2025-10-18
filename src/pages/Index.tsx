@@ -116,6 +116,17 @@ const Index = () => {
     setIsEditDialogOpen(true);
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setTempCustomIconUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSaveSiteSettings = () => {
     setSiteTitle(tempTitle);
     setSiteSubtitle(tempSubtitle);
@@ -256,23 +267,47 @@ const Index = () => {
                 </p>
               </div>
             ) : (
-              <div className="space-y-2">
-                <label className="text-sm font-medium">URL изображения</label>
-                <div className="flex gap-2">
+              <div className="space-y-3">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Загрузить с компьютера</label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="flex-1"
+                    />
+                    {tempCustomIconUrl && (
+                      <div className="flex items-center justify-center w-12 h-12 border rounded-lg overflow-hidden bg-background">
+                        <img src={tempCustomIconUrl} alt="Preview" className="w-full h-full object-contain" />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Загрузите изображение (PNG, JPG, SVG)
+                  </p>
+                </div>
+
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-popover px-2 text-muted-foreground">или</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">URL изображения</label>
                   <Input
                     value={tempCustomIconUrl}
                     onChange={(e) => setTempCustomIconUrl(e.target.value)}
                     placeholder="https://example.com/logo.png"
                   />
-                  {tempCustomIconUrl && (
-                    <div className="flex items-center justify-center w-12 h-12 border rounded-lg overflow-hidden">
-                      <img src={tempCustomIconUrl} alt="Preview" className="w-full h-full object-contain" />
-                    </div>
-                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Или вставьте ссылку на изображение
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Вставьте ссылку на изображение вашего логотипа
-                </p>
               </div>
             )}
             <div className="flex justify-end gap-2 pt-4">
