@@ -45,6 +45,16 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
     setOpenRules(newOpenRules);
   };
 
+  const expandAll = () => {
+    setOpenRules(new Set(rules.map((_, idx) => idx)));
+  };
+
+  const collapseAll = () => {
+    setOpenRules(new Set());
+  };
+
+  const allExpanded = openRules.size === rules.length;
+
   if (!rules || rules.length === 0) {
     return (
       <Card>
@@ -106,8 +116,20 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
   }
 
   return (
-    <div className="grid gap-3">
-      {rules.map((rule, idx) => (
+    <div className="space-y-4">
+      <div className="flex justify-end">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={allExpanded ? collapseAll : expandAll}
+          className="gap-2"
+        >
+          <Icon name={allExpanded ? "ChevronsUp" : "ChevronsDown"} size={16} />
+          {allExpanded ? 'Свернуть все' : 'Развернуть все'}
+        </Button>
+      </div>
+      <div className="grid gap-3">
+        {rules.map((rule, idx) => (
         <Card 
           key={idx} 
           className="hover:shadow-md transition-all cursor-pointer overflow-hidden"
@@ -134,7 +156,8 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
             </CardContent>
           )}
         </Card>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
