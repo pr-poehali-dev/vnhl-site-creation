@@ -108,6 +108,7 @@ const Index = () => {
   const [playoffBracket, setPlayoffBracket] = useState(defaultPlayoffBracket);
   const [rules, setRules] = useState(defaultRules);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const savedEastern = localStorage.getItem('easternTeams');
@@ -115,26 +116,30 @@ const Index = () => {
     const savedGames = localStorage.getItem('upcomingGames');
     const savedPlayoff = localStorage.getItem('playoffBracket');
     const savedRules = localStorage.getItem('rules');
+    const adminAuth = sessionStorage.getItem('adminAuth');
 
     if (savedEastern) setEasternTeams(JSON.parse(savedEastern));
     if (savedWestern) setWesternTeams(JSON.parse(savedWestern));
     if (savedGames) setUpcomingGames(JSON.parse(savedGames));
     if (savedPlayoff) setPlayoffBracket(JSON.parse(savedPlayoff));
     if (savedRules) setRules(JSON.parse(savedRules));
+    if (adminAuth === 'true') setIsAdmin(true);
   }, []);
 
   const allTeams = [...easternTeams, ...westernTeams].sort((a, b) => b.points - a.points);
 
   const handleDragStart = (index: number) => {
+    if (!isAdmin) return;
     setDraggedIndex(index);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
+    if (!isAdmin) return;
     e.preventDefault();
   };
 
   const handleDrop = (dropIndex: number, conference: 'eastern' | 'western') => {
-    if (draggedIndex === null) return;
+    if (!isAdmin || draggedIndex === null) return;
 
     const teams = conference === 'eastern' ? [...easternTeams] : [...westernTeams];
     const [draggedTeam] = teams.splice(draggedIndex, 1);
@@ -168,14 +173,38 @@ const Index = () => {
                 <p className="text-sm text-muted-foreground">Виртуальная Национальная Хоккейная Лига</p>
               </div>
             </div>
-            <Button
-              variant="outline"
-              onClick={() => navigate('/admin')}
-              className="gap-2"
-            >
-              <Icon name="Settings" size={18} />
-              Админ-панель
-            </Button>
+            {!isAdmin ? (
+              <Button
+                variant="outline"
+                onClick={() => navigate('/admin')}
+                className="gap-2"
+              >
+                <Icon name="Settings" size={18} />
+                Админ-панель
+              </Button>
+            ) : (
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => navigate('/admin')}
+                  className="gap-2"
+                >
+                  <Icon name="Settings" size={18} />
+                  Админ-панель
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    sessionStorage.removeItem('adminAuth');
+                    setIsAdmin(false);
+                  }}
+                  className="gap-2"
+                >
+                  <Icon name="LogOut" size={18} />
+                  Выйти
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -235,15 +264,15 @@ const Index = () => {
                         {easternTeams.map((team, index) => (
                           <TableRow
                             key={team.pos}
-                            draggable
+                            draggable={isAdmin}
                             onDragStart={() => handleDragStart(index)}
                             onDragOver={handleDragOver}
                             onDrop={() => handleDrop(index, 'eastern')}
-                            className="hover:bg-muted/50 transition-colors cursor-move"
+                            className={`hover:bg-muted/50 transition-colors ${isAdmin ? 'cursor-move' : ''}`}
                           >
                             <TableCell className="font-medium">{team.pos}</TableCell>
                             <TableCell className="font-semibold flex items-center gap-2">
-                              <Icon name="GripVertical" size={16} className="text-muted-foreground" />
+                              {isAdmin && <Icon name="GripVertical" size={16} className="text-muted-foreground" />}
                               {team.team}
                             </TableCell>
                             <TableCell className="text-center">{team.games}</TableCell>
@@ -290,15 +319,15 @@ const Index = () => {
                         {westernTeams.map((team, index) => (
                           <TableRow
                             key={team.pos}
-                            draggable
+                            draggable={isAdmin}
                             onDragStart={() => handleDragStart(index)}
                             onDragOver={handleDragOver}
                             onDrop={() => handleDrop(index, 'western')}
-                            className="hover:bg-muted/50 transition-colors cursor-move"
+                            className={`hover:bg-muted/50 transition-colors ${isAdmin ? 'cursor-move' : ''}`}
                           >
                             <TableCell className="font-medium">{team.pos}</TableCell>
                             <TableCell className="font-semibold flex items-center gap-2">
-                              <Icon name="GripVertical" size={16} className="text-muted-foreground" />
+                              {isAdmin && <Icon name="GripVertical" size={16} className="text-muted-foreground" />}
                               {team.team}
                             </TableCell>
                             <TableCell className="text-center">{team.games}</TableCell>
