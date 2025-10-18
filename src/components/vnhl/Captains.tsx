@@ -100,15 +100,16 @@ const Captains = ({ captains, isAdmin, onUpdate, emptyMessage, onUpdateEmptyMess
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Капитаны команд</h2>
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <h2 className="text-xl md:text-2xl font-bold">Капитаны команд</h2>
         {isAdmin && (
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="gap-2">
+              <Button className="gap-2 w-full sm:w-auto">
                 <Icon name="Plus" size={18} />
-                Добавить капитана
+                <span className="hidden sm:inline">Добавить капитана</span>
+                <span className="sm:hidden">Добавить</span>
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -176,7 +177,7 @@ const Captains = ({ captains, isAdmin, onUpdate, emptyMessage, onUpdateEmptyMess
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
         {captains.map((captain) => (
           <Card key={captain.id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <CardContent className="p-0">
@@ -189,7 +190,7 @@ const Captains = ({ captains, isAdmin, onUpdate, emptyMessage, onUpdateEmptyMess
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <Icon name="User" size={80} className="text-muted-foreground/30" />
+                    <Icon name="User" size={48} className="text-muted-foreground/30 md:w-20 md:h-20" />
                   </div>
                 )}
                 {isAdmin && (
@@ -284,10 +285,10 @@ const Captains = ({ captains, isAdmin, onUpdate, emptyMessage, onUpdateEmptyMess
                   </div>
                 )}
               </div>
-              <div className="p-4 space-y-2">
-                <h3 className="font-bold text-lg">{captain.name}</h3>
-                <p className="text-sm text-muted-foreground">{captain.team}</p>
-                <div className="flex items-center gap-4 text-sm">
+              <div className="p-2 md:p-4 space-y-1 md:space-y-2">
+                <h3 className="font-bold text-xs md:text-lg truncate">{captain.name}</h3>
+                <p className="text-xs md:text-sm text-muted-foreground truncate">{captain.team}</p>
+                <div className="flex items-center gap-2 md:gap-4 text-xs md:text-sm">
                   <span className="font-semibold">#{captain.number}</span>
                   <span className="text-muted-foreground">{captain.position}</span>
                 </div>

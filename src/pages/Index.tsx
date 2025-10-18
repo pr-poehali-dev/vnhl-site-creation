@@ -161,49 +161,51 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <div className="container mx-auto px-4 py-4 md:py-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3 w-full sm:w-auto">
               {iconType === 'custom' && customIconUrl ? (
-                <img src={customIconUrl} alt="Logo" className="w-10 h-10 object-contain" />
+                <img src={customIconUrl} alt="Logo" className="w-8 h-8 md:w-10 md:h-10 object-contain flex-shrink-0" />
               ) : (
-                <Icon name={siteIcon} size={40} className="text-primary" />
+                <Icon name={siteIcon} size={32} className="text-primary md:w-10 md:h-10 flex-shrink-0" />
               )}
-              <div>
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <h1 className="text-4xl font-bold">{siteTitle}</h1>
+                  <h1 className="text-2xl md:text-4xl font-bold truncate">{siteTitle}</h1>
                   {isAdmin && (
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={handleEditSite}
-                      className="gap-1 h-8"
+                      className="gap-1 h-8 flex-shrink-0"
                     >
                       <Icon name="Pencil" size={14} />
                     </Button>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">{siteSubtitle}</p>
+                <p className="text-xs md:text-sm text-muted-foreground truncate">{siteSubtitle}</p>
               </div>
             </div>
             {!isAdmin ? (
               <Button
                 variant="outline"
                 onClick={() => navigate('/admin')}
-                className="gap-2"
+                className="gap-2 w-full sm:w-auto"
               >
                 <Icon name="Settings" size={18} />
-                Админ-панель
+                <span className="hidden sm:inline">Админ-панель</span>
+                <span className="sm:hidden">Админ</span>
               </Button>
             ) : (
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full sm:w-auto">
                 <Button
                   variant="outline"
                   onClick={() => navigate('/admin')}
-                  className="gap-2"
+                  className="gap-2 flex-1 sm:flex-none"
                 >
                   <Icon name="Settings" size={18} />
-                  Админ-панель
+                  <span className="hidden sm:inline">Админ-панель</span>
+                  <span className="sm:hidden">Админ</span>
                 </Button>
                 <Button
                   variant="destructive"
@@ -211,10 +213,10 @@ const Index = () => {
                     sessionStorage.removeItem('adminAuth');
                     setIsAdmin(false);
                   }}
-                  className="gap-2"
+                  className="gap-2 flex-1 sm:flex-none"
                 >
                   <Icon name="LogOut" size={18} />
-                  Выйти
+                  <span className="hidden sm:inline">Выйти</span>
                 </Button>
               </div>
             )}
@@ -342,47 +344,58 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-6 md:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="standings" className="gap-2">
-              <Icon name="BarChart3" size={18} />
-              Таблицы
+          <TabsList className="grid w-full grid-cols-5 mb-6 md:mb-8 h-auto">
+            <TabsTrigger value="standings" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="BarChart3" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Таблицы</span>
+              <span className="sm:hidden">Таб</span>
             </TabsTrigger>
-            <TabsTrigger value="playoff" className="gap-2">
-              <Icon name="Zap" size={18} />
-              Плей-офф
+            <TabsTrigger value="playoff" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="Zap" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Плей-офф</span>
+              <span className="sm:hidden">PO</span>
             </TabsTrigger>
-            <TabsTrigger value="schedule" className="gap-2">
-              <Icon name="Calendar" size={18} />
-              Календарь
+            <TabsTrigger value="schedule" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="Calendar" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Календарь</span>
+              <span className="sm:hidden">Игры</span>
             </TabsTrigger>
-            <TabsTrigger value="captains" className="gap-2">
-              <Icon name="Users" size={18} />
-              Кэпы
+            <TabsTrigger value="captains" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="Users" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="hidden sm:inline">Кэпы</span>
+              <span className="sm:hidden">Кэп</span>
             </TabsTrigger>
-            <TabsTrigger value="rules" className="gap-2">
-              <Icon name="BookOpen" size={18} />
-              Правила
+            <TabsTrigger value="rules" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
+              <Icon name="BookOpen" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span>Правила</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="standings" className="space-y-6">
+          <TabsContent value="standings" className="space-y-4 md:space-y-6">
             <Tabs defaultValue="east" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="east">Восточная конференция</TabsTrigger>
-                <TabsTrigger value="west">Западная конференция</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-4 md:mb-6">
+                <TabsTrigger value="east" className="text-xs md:text-sm">
+                  <span className="hidden md:inline">Восточная конференция</span>
+                  <span className="md:hidden">Восток</span>
+                </TabsTrigger>
+                <TabsTrigger value="west" className="text-xs md:text-sm">
+                  <span className="hidden md:inline">Западная конференция</span>
+                  <span className="md:hidden">Запад</span>
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="east">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Icon name="Compass" size={24} className="text-primary" />
-                      Восточная конференция
+                    <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                      <Icon name="Compass" size={20} className="text-primary md:w-6 md:h-6" />
+                      <span className="hidden sm:inline">Восточная конференция</span>
+                      <span className="sm:hidden">Восток</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="overflow-x-auto">
                     <StandingsTable
                       teams={easternTeams}
                       isAdmin={isAdmin}
@@ -397,12 +410,13 @@ const Index = () => {
               <TabsContent value="west">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Icon name="Compass" size={24} className="text-secondary" />
-                      Западная конференция
+                    <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                      <Icon name="Compass" size={20} className="text-secondary md:w-6 md:h-6" />
+                      <span className="hidden sm:inline">Западная конференция</span>
+                      <span className="sm:hidden">Запад</span>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="overflow-x-auto">
                     <StandingsTable
                       teams={westernTeams}
                       isAdmin={isAdmin}

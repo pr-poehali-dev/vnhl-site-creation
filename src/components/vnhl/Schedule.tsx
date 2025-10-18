@@ -100,9 +100,10 @@ const Schedule = ({ games, isAdmin = false, emptyMessage, onUpdateEmptyMessage }
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Icon name="Calendar" size={24} className="text-primary" />
-          Предстоящие матчи
+        <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+          <Icon name="Calendar" size={20} className="text-primary md:w-6 md:h-6" />
+          <span className="hidden sm:inline">Предстоящие матчи</span>
+          <span className="sm:hidden">Матчи</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -110,26 +111,26 @@ const Schedule = ({ games, isAdmin = false, emptyMessage, onUpdateEmptyMessage }
           {games.map((game, idx) => (
             <div
               key={idx}
-              className="bg-muted/30 rounded-lg p-4 flex items-center justify-between hover:bg-muted/50 transition-colors"
+              className="bg-muted/30 rounded-lg p-3 md:p-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:justify-between hover:bg-muted/50 transition-colors"
             >
-              <div className="flex items-center gap-4">
-                <div className="text-center min-w-[80px]">
-                  <div className="text-sm font-semibold">{game.date}</div>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                <div className="text-center sm:min-w-[80px]">
+                  <div className="text-xs md:text-sm font-semibold">{game.date}</div>
                   <div className="text-xs text-muted-foreground">{game.time}</div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="font-semibold">{game.home}</span>
-                  <Icon name="Swords" size={18} className="text-muted-foreground" />
-                  <span className="font-semibold">{game.away}</span>
+                <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+                  <span className="font-semibold text-xs md:text-sm">{game.home}</span>
+                  <Icon name="Swords" size={16} className="text-muted-foreground flex-shrink-0" />
+                  <span className="font-semibold text-xs md:text-sm">{game.away}</span>
                 </div>
               </div>
-              <Badge variant="outline">{game.status}</Badge>
+              <Badge variant="outline" className="text-xs self-start sm:self-center">{game.status}</Badge>
             </div>
           ))}
         </div>
       </CardContent>
     </Card>
-  );
+  );}
 };
 
 export default Schedule;

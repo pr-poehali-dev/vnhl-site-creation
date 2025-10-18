@@ -29,16 +29,16 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
     if (!match.team1 && !match.team2) return null;
     
     return (
-      <div key={idx} className="bg-muted/30 rounded-lg p-3 space-y-1">
-        <div className="flex justify-between items-center">
-          <span className="font-medium">{match.team1 || 'TBD'}</span>
-          <Badge variant={match.score1 > match.score2 ? 'default' : 'secondary'}>
+      <div key={idx} className="bg-muted/30 rounded-lg p-2 md:p-3 space-y-1">
+        <div className="flex justify-between items-center gap-2">
+          <span className="font-medium text-xs md:text-sm truncate">{match.team1 || 'TBD'}</span>
+          <Badge variant={match.score1 > match.score2 ? 'default' : 'secondary'} className="text-xs flex-shrink-0">
             {match.score1}
           </Badge>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="font-medium">{match.team2 || 'TBD'}</span>
-          <Badge variant={match.score2 > match.score1 ? 'default' : 'secondary'}>
+        <div className="flex justify-between items-center gap-2">
+          <span className="font-medium text-xs md:text-sm truncate">{match.team2 || 'TBD'}</span>
+          <Badge variant={match.score2 > match.score1 ? 'default' : 'secondary'} className="text-xs flex-shrink-0">
             {match.score2}
           </Badge>
         </div>
@@ -51,21 +51,21 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
 
     return (
       <div>
-        <h3 className="text-sm font-semibold text-muted-foreground mb-3">{title}</h3>
+        <h3 className="text-xs md:text-sm font-semibold text-muted-foreground mb-2 md:mb-3">{title}</h3>
         <div className="space-y-2">
           {matches.map((match, idx) => {
             if (!match) return null;
             return (
-              <div key={idx} className="bg-muted/30 rounded-lg p-3 space-y-1">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">{match.team1 || 'TBD'}</span>
-                  <Badge variant={match.score1 > match.score2 ? 'default' : 'secondary'}>
+              <div key={idx} className="bg-muted/30 rounded-lg p-2 md:p-3 space-y-1">
+                <div className="flex justify-between items-center gap-2">
+                  <span className="font-medium text-xs md:text-sm truncate">{match.team1 || 'TBD'}</span>
+                  <Badge variant={match.score1 > match.score2 ? 'default' : 'secondary'} className="text-xs flex-shrink-0">
                     {match.score1}
                   </Badge>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium">{match.team2 || 'TBD'}</span>
-                  <Badge variant={match.score2 > match.score1 ? 'default' : 'secondary'}>
+                <div className="flex justify-between items-center gap-2">
+                  <span className="font-medium text-xs md:text-sm truncate">{match.team2 || 'TBD'}</span>
+                  <Badge variant={match.score2 > match.score1 ? 'default' : 'secondary'} className="text-xs flex-shrink-0">
                     {match.score2}
                   </Badge>
                 </div>
@@ -108,16 +108,17 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
+    <div className="space-y-4 md:space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Compass" size={24} className="text-primary" />
-              Восточная конференция
+            <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+              <Icon name="Compass" size={20} className="text-primary md:w-6 md:h-6" />
+              <span className="hidden sm:inline">Восточная конференция</span>
+              <span className="sm:hidden">Восток</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 md:space-y-6">
             {renderRound('1/8 финала', bracket?.eastern?.round1)}
             {renderRound('1/4 финала', bracket?.eastern?.round2)}
             {renderRound('Полуфинал', bracket?.eastern?.round3)}
@@ -126,12 +127,13 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Compass" size={24} className="text-secondary" />
-              Западная конференция
+            <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+              <Icon name="Compass" size={20} className="text-secondary md:w-6 md:h-6" />
+              <span className="hidden sm:inline">Западная конференция</span>
+              <span className="sm:hidden">Запад</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-4 md:space-y-6">
             {renderRound('1/8 финала', bracket?.western?.round1)}
             {renderRound('1/4 финала', bracket?.western?.round2)}
             {renderRound('Полуфинал', bracket?.western?.round3)}
@@ -142,9 +144,10 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
       {bracket?.final && bracket.final.length > 0 && (
         <Card className="border-2 border-primary">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3 justify-center text-2xl">
-              <Icon name="Trophy" size={32} className="text-primary" />
-              Главный Финал VNHL
+            <CardTitle className="flex items-center gap-2 md:gap-3 justify-center text-lg md:text-2xl">
+              <Icon name="Trophy" size={24} className="text-primary md:w-8 md:h-8" />
+              <span className="hidden sm:inline">Главный Финал VNHL</span>
+              <span className="sm:hidden">Финал VNHL</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -158,15 +161,16 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
       {bracket?.champion && (
         <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3 justify-center text-3xl">
-              <Icon name="Trophy" size={40} className="text-primary" />
-              Чемпион VNHL
+            <CardTitle className="flex items-center gap-2 md:gap-3 justify-center text-xl md:text-3xl">
+              <Icon name="Trophy" size={32} className="text-primary md:w-10 md:h-10" />
+              <span className="hidden sm:inline">Чемпион VNHL</span>
+              <span className="sm:hidden">Чемпион</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-6">
-              <h2 className="text-4xl font-bold text-primary mb-2">{bracket.champion}</h2>
-              <p className="text-muted-foreground text-lg">Победитель сезона</p>
+            <div className="text-center py-4 md:py-6">
+              <h2 className="text-2xl md:text-4xl font-bold text-primary mb-2">{bracket.champion}</h2>
+              <p className="text-muted-foreground text-sm md:text-lg">Победитель сезона</p>
             </div>
           </CardContent>
         </Card>
