@@ -54,9 +54,8 @@ const StandingsTable = ({
           <TableHead className="text-center">И</TableHead>
           <TableHead className="text-center">В</TableHead>
           <TableHead className="text-center">П</TableHead>
-          <TableHead className="text-center">ОТ</TableHead>
           <TableHead className="text-center font-bold">О</TableHead>
-          <TableHead className="text-center">Серия</TableHead>
+          <TableHead className="text-center">Плей-Офф</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -77,7 +76,6 @@ const StandingsTable = ({
             <TableCell className="text-center">{team.games}</TableCell>
             <TableCell className="text-center text-green-400">{team.wins}</TableCell>
             <TableCell className="text-center text-red-400">{team.losses}</TableCell>
-            <TableCell className="text-center text-yellow-400">{team.otl}</TableCell>
             <TableCell className="text-center font-bold text-primary">{team.points}</TableCell>
             <TableCell className="text-center">
               <Badge variant={team.streak.startsWith('W') ? 'default' : 'secondary'}>
