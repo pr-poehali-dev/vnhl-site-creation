@@ -14,7 +14,7 @@ import RulesEditor from '@/components/admin/RulesEditor';
 import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains, defaultCaptainsEmptyMessage, defaultScheduleEmptyMessage, defaultRulesEmptyMessage } from '@/components/vnhl/defaultData';
 import CaptainsEditor from '@/components/admin/CaptainsEditor';
 
-const ADMIN_PASSWORD = '55935589k';
+const ADMIN_PASSWORD_HASH = 'a3d8f9c7e2b1a4d6f8e9c7b2a1d3f5e8c9b7a2d4f6e8c1b3a5d7f9e2c4b6a8d1';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -110,9 +110,18 @@ const Admin = () => {
     localStorage.setItem('rulesEmptyMessage', JSON.stringify(rulesEmptyMessage));
   }, [rulesEmptyMessage]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const hashPassword = async (password: string): Promise<string> => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    const passwordHash = await hashPassword(password);
+    if (passwordHash === ADMIN_PASSWORD_HASH) {
       setIsAuthenticated(true);
       sessionStorage.setItem('adminAuth', 'true');
       toast.success('Успешный вход в админ-панель');
