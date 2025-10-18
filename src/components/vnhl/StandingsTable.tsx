@@ -91,7 +91,7 @@ const StandingsTable = ({
         </TableBody>
       </Table>
     </div>
-  );}
+  );
 };
 
 export default StandingsTable;

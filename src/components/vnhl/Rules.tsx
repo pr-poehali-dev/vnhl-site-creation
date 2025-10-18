@@ -160,7 +160,7 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
         ))}
       </div>
     </div>
-  );}
+  );
 };
 
 export default Rules;

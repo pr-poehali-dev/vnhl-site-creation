@@ -130,7 +130,7 @@ const Schedule = ({ games, isAdmin = false, emptyMessage, onUpdateEmptyMessage }
         </div>
       </CardContent>
     </Card>
-  );}
+  );
 };
 
 export default Schedule;
