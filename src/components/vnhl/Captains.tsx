@@ -106,10 +106,9 @@ const Captains = ({ captains, isAdmin, onUpdate, emptyMessage, onUpdateEmptyMess
         {isAdmin && (
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="gap-2 w-full sm:w-auto">
+              <Button className="gap-2 w-full sm:w-auto text-xs sm:text-sm">
                 <Icon name="Plus" size={18} />
-                <span className="hidden sm:inline">Добавить капитана</span>
-                <span className="sm:hidden">Добавить</span>
+                Добавить капитана
               </Button>
             </DialogTrigger>
             <DialogContent>

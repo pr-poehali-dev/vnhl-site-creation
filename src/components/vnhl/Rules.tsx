@@ -125,8 +125,7 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
           className="gap-1 md:gap-2 text-xs md:text-sm"
         >
           <Icon name={allExpanded ? "ChevronsUp" : "ChevronsDown"} size={14} className="md:w-4 md:h-4" />
-          <span className="hidden sm:inline">{allExpanded ? 'Свернуть все' : 'Развернуть все'}</span>
-          <span className="sm:hidden">{allExpanded ? 'Свернуть' : 'Развернуть'}</span>
+          {allExpanded ? 'Свернуть все' : 'Развернуть все'}
         </Button>
       </div>
       <div className="grid gap-2 md:gap-3">

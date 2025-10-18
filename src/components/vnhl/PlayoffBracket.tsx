@@ -114,8 +114,7 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
               <Icon name="Compass" size={20} className="text-primary md:w-6 md:h-6" />
-              <span className="hidden sm:inline">Восточная конференция</span>
-              <span className="sm:hidden">Восток</span>
+              Восточная конференция
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 md:space-y-6">
@@ -129,8 +128,7 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
               <Icon name="Compass" size={20} className="text-secondary md:w-6 md:h-6" />
-              <span className="hidden sm:inline">Западная конференция</span>
-              <span className="sm:hidden">Запад</span>
+              Западная конференция
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 md:space-y-6">
@@ -146,8 +144,7 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 md:gap-3 justify-center text-lg md:text-2xl">
               <Icon name="Trophy" size={24} className="text-primary md:w-8 md:h-8" />
-              <span className="hidden sm:inline">Главный Финал VNHL</span>
-              <span className="sm:hidden">Финал VNHL</span>
+              Главный Финал VNHL
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -163,8 +160,7 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 md:gap-3 justify-center text-xl md:text-3xl">
               <Icon name="Trophy" size={32} className="text-primary md:w-10 md:h-10" />
-              <span className="hidden sm:inline">Чемпион VNHL</span>
-              <span className="sm:hidden">Чемпион</span>
+              Чемпион VNHL
             </CardTitle>
           </CardHeader>
           <CardContent>

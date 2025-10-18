@@ -190,22 +190,20 @@ const Index = () => {
               <Button
                 variant="outline"
                 onClick={() => navigate('/admin')}
-                className="gap-2 w-full sm:w-auto"
+                className="gap-2 w-full sm:w-auto text-xs sm:text-sm"
               >
                 <Icon name="Settings" size={18} />
-                <span className="hidden sm:inline">Админ-панель</span>
-                <span className="sm:hidden">Админ</span>
+                Админ-панель
               </Button>
             ) : (
               <div className="flex gap-2 w-full sm:w-auto">
                 <Button
                   variant="outline"
                   onClick={() => navigate('/admin')}
-                  className="gap-2 flex-1 sm:flex-none"
+                  className="gap-2 flex-1 sm:flex-none text-xs sm:text-sm"
                 >
                   <Icon name="Settings" size={18} />
-                  <span className="hidden sm:inline">Админ-панель</span>
-                  <span className="sm:hidden">Админ</span>
+                  Админ-панель
                 </Button>
                 <Button
                   variant="destructive"
@@ -213,10 +211,10 @@ const Index = () => {
                     sessionStorage.removeItem('adminAuth');
                     setIsAdmin(false);
                   }}
-                  className="gap-2 flex-1 sm:flex-none"
+                  className="gap-2 flex-1 sm:flex-none text-xs sm:text-sm"
                 >
                   <Icon name="LogOut" size={18} />
-                  <span className="hidden sm:inline">Выйти</span>
+                  Выйти
                 </Button>
               </div>
             )}
@@ -349,23 +347,19 @@ const Index = () => {
           <TabsList className="grid w-full grid-cols-5 mb-6 md:mb-8 h-auto">
             <TabsTrigger value="standings" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="BarChart3" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Таблицы</span>
-              <span className="sm:hidden">Таб</span>
+              <span>Таблицы</span>
             </TabsTrigger>
             <TabsTrigger value="playoff" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="Zap" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Плей-офф</span>
-              <span className="sm:hidden">PO</span>
+              <span>Плей-офф</span>
             </TabsTrigger>
             <TabsTrigger value="schedule" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="Calendar" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Календарь</span>
-              <span className="sm:hidden">Игры</span>
+              <span>Календарь</span>
             </TabsTrigger>
             <TabsTrigger value="captains" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="Users" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Кэпы</span>
-              <span className="sm:hidden">Кэп</span>
+              <span>Кэпы</span>
             </TabsTrigger>
             <TabsTrigger value="rules" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="BookOpen" size={16} className="md:w-[18px] md:h-[18px]" />
@@ -377,12 +371,10 @@ const Index = () => {
             <Tabs defaultValue="east" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-4 md:mb-6">
                 <TabsTrigger value="east" className="text-xs md:text-sm">
-                  <span className="hidden md:inline">Восточная конференция</span>
-                  <span className="md:hidden">Восток</span>
+                  Восточная конференция
                 </TabsTrigger>
                 <TabsTrigger value="west" className="text-xs md:text-sm">
-                  <span className="hidden md:inline">Западная конференция</span>
-                  <span className="md:hidden">Запад</span>
+                  Западная конференция
                 </TabsTrigger>
               </TabsList>
 
@@ -391,8 +383,7 @@ const Index = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                       <Icon name="Compass" size={20} className="text-primary md:w-6 md:h-6" />
-                      <span className="hidden sm:inline">Восточная конференция</span>
-                      <span className="sm:hidden">Восток</span>
+                      Восточная конференция
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="overflow-x-auto">
@@ -412,8 +403,7 @@ const Index = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                       <Icon name="Compass" size={20} className="text-secondary md:w-6 md:h-6" />
-                      <span className="hidden sm:inline">Западная конференция</span>
-                      <span className="sm:hidden">Запад</span>
+                      Западная конференция
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="overflow-x-auto">

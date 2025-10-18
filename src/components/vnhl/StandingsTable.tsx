@@ -56,10 +56,7 @@ const StandingsTable = ({
             <TableHead className="text-center text-xs md:text-sm w-10 md:w-12">В</TableHead>
             <TableHead className="text-center text-xs md:text-sm w-10 md:w-12">П</TableHead>
             <TableHead className="text-center font-bold text-xs md:text-sm w-10 md:w-12">О</TableHead>
-            <TableHead className="text-center text-xs md:text-sm">
-              <span className="hidden md:inline">Плей-Офф</span>
-              <span className="md:hidden">PO</span>
-            </TableHead>
+            <TableHead className="text-center text-xs md:text-sm">Плей-Офф</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

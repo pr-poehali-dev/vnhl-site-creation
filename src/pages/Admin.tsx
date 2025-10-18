@@ -303,17 +303,15 @@ const Admin = () => {
                 }}
               >
                 <Icon name="RotateCcw" size={16} className="md:w-[18px] md:h-[18px]" />
-                <span className="hidden sm:inline">Сбросить данные</span>
-                <span className="sm:hidden">Сброс</span>
+                Сбросить данные
               </Button>
               <Button variant="outline" onClick={() => navigate('/')} className="flex-1 sm:flex-none gap-1 md:gap-2 text-xs md:text-sm">
                 <Icon name="Home" size={16} className="md:w-[18px] md:h-[18px]" />
-                <span className="hidden sm:inline">На главную</span>
-                <span className="sm:hidden">Главная</span>
+                На главную
               </Button>
               <Button variant="destructive" onClick={handleLogout} className="flex-1 sm:flex-none gap-1 md:gap-2 text-xs md:text-sm">
                 <Icon name="LogOut" size={16} className="md:w-[18px] md:h-[18px]" />
-                <span>Выйти</span>
+                Выйти
               </Button>
             </div>
           </div>
@@ -325,27 +323,23 @@ const Admin = () => {
           <TabsList className="grid w-full grid-cols-5 mb-6 md:mb-8 h-auto">
             <TabsTrigger value="teams" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="Users" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Команды</span>
-              <span className="sm:hidden">Ком</span>
+              <span>Команды</span>
             </TabsTrigger>
             <TabsTrigger value="games" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="Calendar" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Календарь</span>
-              <span className="sm:hidden">Игры</span>
+              <span>Календарь</span>
             </TabsTrigger>
             <TabsTrigger value="playoff" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="Zap" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Плей-офф</span>
-              <span className="sm:hidden">PO</span>
+              <span>Плей-офф</span>
             </TabsTrigger>
             <TabsTrigger value="captains" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="Shield" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span className="hidden sm:inline">Кэпы</span>
-              <span className="sm:hidden">Кэп</span>
+              <span>Кэпы</span>
             </TabsTrigger>
             <TabsTrigger value="rules" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3 text-xs md:text-sm">
               <Icon name="BookOpen" size={16} className="md:w-[18px] md:h-[18px]" />
-              <span>Прав</span>
+              <span>Правила</span>
             </TabsTrigger>
           </TabsList>
 

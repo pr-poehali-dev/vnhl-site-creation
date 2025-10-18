@@ -102,8 +102,7 @@ const Schedule = ({ games, isAdmin = false, emptyMessage, onUpdateEmptyMessage }
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
           <Icon name="Calendar" size={20} className="text-primary md:w-6 md:h-6" />
-          <span className="hidden sm:inline">Предстоящие матчи</span>
-          <span className="sm:hidden">Матчи</span>
+          Предстоящие матчи
         </CardTitle>
       </CardHeader>
       <CardContent>
