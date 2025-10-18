@@ -13,6 +13,7 @@ import PlayoffEditor from '@/components/admin/PlayoffEditor';
 import RulesEditor from '@/components/admin/RulesEditor';
 import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains, defaultCaptainsEmptyMessage, defaultScheduleEmptyMessage, defaultRulesEmptyMessage } from '@/components/vnhl/defaultData';
 import CaptainsEditor from '@/components/admin/CaptainsEditor';
+import { hashPassword, checkRateLimit, recordLoginAttempt, validateSession, setSecureSession, clearSecureSession, sanitizeInput } from '@/utils/security';
 
 const ADMIN_PASSWORD_HASH = 'a3d8f9c7e2b1a4d6f8e9c7b2a1d3f5e8c9b7a2d4f6e8c1b3a5d7f9e2c4b6a8d1';
 
@@ -68,8 +69,7 @@ const Admin = () => {
   });
 
   useEffect(() => {
-    const auth = sessionStorage.getItem('adminAuth');
-    if (auth === 'true') {
+    if (validateSession()) {
       setIsAuthenticated(true);
     }
   }, []);
@@ -110,29 +110,39 @@ const Admin = () => {
     localStorage.setItem('rulesEmptyMessage', JSON.stringify(rulesEmptyMessage));
   }, [rulesEmptyMessage]);
 
-  const hashPassword = async (password: string): Promise<string> => {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const passwordHash = await hashPassword(password);
-    if (passwordHash === ADMIN_PASSWORD_HASH) {
+    
+    const sanitizedPassword = sanitizeInput(password);
+    
+    const rateLimit = checkRateLimit('admin_login');
+    if (!rateLimit.allowed) {
+      toast.error(`Слишком много попыток входа. Попробуйте через ${rateLimit.lockoutTime} минут`);
+      return;
+    }
+    
+    const passwordHash = await hashPassword(sanitizedPassword);
+    const isValid = passwordHash === ADMIN_PASSWORD_HASH;
+    
+    recordLoginAttempt('admin_login', isValid);
+    
+    if (isValid) {
       setIsAuthenticated(true);
-      sessionStorage.setItem('adminAuth', 'true');
+      setSecureSession();
       toast.success('Успешный вход в админ-панель');
     } else {
-      toast.error('Неверный пароль');
+      const remaining = rateLimit.remainingAttempts - 1;
+      if (remaining > 0) {
+        toast.error(`Неверный пароль. Осталось попыток: ${remaining}`);
+      } else {
+        toast.error('Неверный пароль. Аккаунт заблокирован на 15 минут');
+      }
     }
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem('adminAuth');
+    clearSecureSession();
     setPassword('');
     toast.success('Выход выполнен');
   };
