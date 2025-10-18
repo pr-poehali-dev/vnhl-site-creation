@@ -1,7 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
+import { toast } from 'sonner';
 
 interface PlayoffMatch {
   team1: string;
@@ -14,10 +16,14 @@ interface PlayoffBracket {
   eastern: {
     round1: PlayoffMatch[];
     round2: PlayoffMatch[];
+    round3: PlayoffMatch[];
+    final: PlayoffMatch[];
   };
   western: {
     round1: PlayoffMatch[];
     round2: PlayoffMatch[];
+    round3: PlayoffMatch[];
+    final: PlayoffMatch[];
   };
 }
 
@@ -29,7 +35,7 @@ interface PlayoffEditorProps {
 const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) => {
   const updateMatch = (
     conference: 'eastern' | 'western',
-    round: 'round1' | 'round2',
+    round: 'round1' | 'round2' | 'round3' | 'final',
     index: number,
     field: keyof PlayoffMatch,
     value: string | number
@@ -42,13 +48,43 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
     onUpdatePlayoff(updated);
   };
 
+  const addMatch = (conference: 'eastern' | 'western', round: 'round1' | 'round2' | 'round3' | 'final') => {
+    const updated = { ...playoffBracket };
+    updated[conference][round].push({
+      team1: '',
+      team2: '',
+      score1: 0,
+      score2: 0,
+    });
+    onUpdatePlayoff(updated);
+    toast.success('Матч добавлен');
+  };
+
+  const deleteMatch = (conference: 'eastern' | 'western', round: 'round1' | 'round2' | 'round3' | 'final', index: number) => {
+    const updated = { ...playoffBracket };
+    updated[conference][round] = updated[conference][round].filter((_, i) => i !== index);
+    onUpdatePlayoff(updated);
+    toast.success('Матч удалён');
+  };
+
   const renderMatchInputs = (
     match: PlayoffMatch,
     conference: 'eastern' | 'western',
-    round: 'round1' | 'round2',
+    round: 'round1' | 'round2' | 'round3' | 'final',
     index: number
   ) => (
     <div className="p-4 border rounded-lg space-y-3 bg-card/50">
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-xs font-semibold text-muted-foreground">Матч {index + 1}</span>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => deleteMatch(conference, round, index)}
+          className="h-6 w-6 p-0"
+        >
+          <Icon name="X" size={14} />
+        </Button>
+      </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Label className="text-xs">Команда 1</Label>
@@ -56,6 +92,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
             value={match.team1}
             onChange={(e) => updateMatch(conference, round, index, 'team1', e.target.value)}
             className="h-9"
+            placeholder="Название команды"
           />
         </div>
         <div>
@@ -64,7 +101,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
             type="number"
             value={match.score1}
             onChange={(e) =>
-              updateMatch(conference, round, index, 'score1', parseInt(e.target.value))
+              updateMatch(conference, round, index, 'score1', parseInt(e.target.value) || 0)
             }
             className="h-9"
           />
@@ -77,6 +114,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
             value={match.team2}
             onChange={(e) => updateMatch(conference, round, index, 'team2', e.target.value)}
             className="h-9"
+            placeholder="Название команды"
           />
         </div>
         <div>
@@ -85,11 +123,40 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
             type="number"
             value={match.score2}
             onChange={(e) =>
-              updateMatch(conference, round, index, 'score2', parseInt(e.target.value))
+              updateMatch(conference, round, index, 'score2', parseInt(e.target.value) || 0)
             }
             className="h-9"
           />
         </div>
+      </div>
+    </div>
+  );
+
+  const renderRound = (
+    conference: 'eastern' | 'western',
+    round: 'round1' | 'round2' | 'round3' | 'final',
+    title: string,
+    matches: PlayoffMatch[]
+  ) => (
+    <div>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-semibold">{title}</h3>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => addMatch(conference, round)}
+          className="h-8"
+        >
+          <Icon name="Plus" size={14} className="mr-1" />
+          Добавить матч
+        </Button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {matches.map((match, index) => (
+          <div key={index}>
+            {renderMatchInputs(match, conference, round, index)}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -104,27 +171,10 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div>
-            <h3 className="font-semibold mb-3">Раунд 1</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {playoffBracket.eastern.round1.map((match, index) => (
-                <div key={index}>
-                  {renderMatchInputs(match, 'eastern', 'round1', index)}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-3">Раунд 2</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {playoffBracket.eastern.round2.map((match, index) => (
-                <div key={index}>
-                  {renderMatchInputs(match, 'eastern', 'round2', index)}
-                </div>
-              ))}
-            </div>
-          </div>
+          {renderRound('eastern', 'round1', '1/8 финала (Раунд 1)', playoffBracket.eastern.round1)}
+          {renderRound('eastern', 'round2', '1/4 финала (Раунд 2)', playoffBracket.eastern.round2)}
+          {renderRound('eastern', 'round3', '1/2 финала (Раунд 3)', playoffBracket.eastern.round3)}
+          {renderRound('eastern', 'final', 'Финал конференции', playoffBracket.eastern.final)}
         </CardContent>
       </Card>
 
@@ -136,27 +186,10 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div>
-            <h3 className="font-semibold mb-3">Раунд 1</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {playoffBracket.western.round1.map((match, index) => (
-                <div key={index}>
-                  {renderMatchInputs(match, 'western', 'round1', index)}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h3 className="font-semibold mb-3">Раунд 2</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {playoffBracket.western.round2.map((match, index) => (
-                <div key={index}>
-                  {renderMatchInputs(match, 'western', 'round2', index)}
-                </div>
-              ))}
-            </div>
-          </div>
+          {renderRound('western', 'round1', '1/8 финала (Раунд 1)', playoffBracket.western.round1)}
+          {renderRound('western', 'round2', '1/4 финала (Раунд 2)', playoffBracket.western.round2)}
+          {renderRound('western', 'round3', '1/2 финала (Раунд 3)', playoffBracket.western.round3)}
+          {renderRound('western', 'final', 'Финал конференции', playoffBracket.western.final)}
         </CardContent>
       </Card>
     </div>
