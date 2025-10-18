@@ -42,10 +42,10 @@ export const defaultPlayoffBracket = {
       { team1: 'Toronto Maple Leafs', team2: 'Tampa Bay Lightning', score1: 4, score2: 3 },
     ],
     round3: [
-      { team1: 'Boston Bruins', team2: 'Toronto Maple Leafs', score1: 2, score2: 1 },
+      { team1: 'Boston Bruins', team2: 'Toronto Maple Leafs', score1: 4, score2: 2 },
     ],
     final: [
-      { team1: '', team2: '', score1: 0, score2: 0 },
+      { team1: 'Boston Bruins', team2: '', score1: 0, score2: 0 },
     ],
   },
   western: {
@@ -60,12 +60,15 @@ export const defaultPlayoffBracket = {
       { team1: 'Dallas Stars', team2: 'Seattle Kraken', score1: 4, score2: 1 },
     ],
     round3: [
-      { team1: 'Vegas Golden Knights', team2: 'Dallas Stars', score1: 1, score2: 2 },
+      { team1: 'Vegas Golden Knights', team2: 'Dallas Stars', score1: 4, score2: 2 },
     ],
     final: [
-      { team1: '', team2: '', score1: 0, score2: 0 },
+      { team1: 'Vegas Golden Knights', team2: '', score1: 0, score2: 0 },
     ],
   },
+  grandFinal: [
+    { team1: 'Boston Bruins', team2: 'Vegas Golden Knights', score1: 2, score2: 3 },
+  ],
 };
 
 export const defaultRules = [

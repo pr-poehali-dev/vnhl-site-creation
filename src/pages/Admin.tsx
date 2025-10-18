@@ -211,6 +211,23 @@ const Admin = () => {
               </div>
             </div>
             <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  if (confirm('Сбросить все данные к значениям по умолчанию?')) {
+                    localStorage.clear();
+                    setEasternTeams(defaultEasternTeams);
+                    setWesternTeams(defaultWesternTeams);
+                    setUpcomingGames(defaultUpcomingGames);
+                    setPlayoffBracket(defaultPlayoffBracket);
+                    setRules(defaultRules);
+                    toast.success('Данные сброшены');
+                  }
+                }}
+              >
+                <Icon name="RotateCcw" size={18} className="mr-2" />
+                Сбросить данные
+              </Button>
               <Button variant="outline" onClick={() => navigate('/')}>
                 <Icon name="Home" size={18} className="mr-2" />
                 На главную
