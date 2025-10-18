@@ -168,7 +168,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
     conference: 'eastern' | 'western' | 'grandFinal',
     round: 'round1' | 'round2' | 'round3' | 'final' | 'grandFinal',
     title: string,
-    matches: PlayoffMatch[]
+    matches: PlayoffMatch[] = []
   ) => (
     <div>
       <div className="flex items-center justify-between mb-3">
@@ -184,7 +184,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {matches.map((match, index) => (
+        {(matches || []).map((match, index) => (
           <div key={index}>
             {renderMatchInputs(match, conference, round, index)}
           </div>
