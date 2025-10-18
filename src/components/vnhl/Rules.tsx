@@ -33,6 +33,18 @@ interface RulesProps {
 const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: RulesProps) => {
   const [isEditMessageOpen, setIsEditMessageOpen] = useState(false);
   const [tempMessage, setTempMessage] = useState(emptyMessage);
+  const [openRules, setOpenRules] = useState<Set<number>>(new Set());
+
+  const toggleRule = (index: number) => {
+    const newOpenRules = new Set(openRules);
+    if (newOpenRules.has(index)) {
+      newOpenRules.delete(index);
+    } else {
+      newOpenRules.add(index);
+    }
+    setOpenRules(newOpenRules);
+  };
+
   if (!rules || rules.length === 0) {
     return (
       <Card>
@@ -94,18 +106,33 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
   }
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-3">
       {rules.map((rule, idx) => (
-        <Card key={idx} className="hover:shadow-lg transition-shadow">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-xl">
-              <Icon name="FileText" size={20} className="text-primary" />
-              {rule.title}
+        <Card 
+          key={idx} 
+          className="hover:shadow-md transition-all cursor-pointer overflow-hidden"
+          onClick={() => toggleRule(idx)}
+        >
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center justify-between text-lg">
+              <div className="flex items-center gap-2">
+                <Icon name="FileText" size={18} className="text-primary" />
+                {rule.title}
+              </div>
+              <Icon 
+                name={openRules.has(idx) ? "ChevronUp" : "ChevronDown"} 
+                size={20} 
+                className="text-muted-foreground transition-transform"
+              />
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground leading-relaxed">{rule.content}</p>
-          </CardContent>
+          {openRules.has(idx) && (
+            <CardContent className="pt-0 pb-4 animate-in slide-in-from-top-2">
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                {rule.content}
+              </p>
+            </CardContent>
+          )}
         </Card>
       ))}
     </div>
