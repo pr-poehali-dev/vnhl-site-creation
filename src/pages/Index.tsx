@@ -149,10 +149,9 @@ const Index = () => {
 
           <TabsContent value="standings" className="space-y-6">
             <Tabs defaultValue="east" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-6">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
                 <TabsTrigger value="east">Восточная конференция</TabsTrigger>
                 <TabsTrigger value="west">Западная конференция</TabsTrigger>
-                <TabsTrigger value="all">Общая таблица</TabsTrigger>
               </TabsList>
 
               <TabsContent value="east">
@@ -190,26 +189,6 @@ const Index = () => {
                       onDragStart={handleDragStart}
                       onDragOver={handleDragOver}
                       onDrop={(index) => handleDrop(index, 'western')}
-                    />
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="all">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Icon name="Globe" size={24} className="text-primary" />
-                      Общая таблица VNHL
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <StandingsTable
-                      teams={allTeams}
-                      isAdmin={false}
-                      onDragStart={() => {}}
-                      onDragOver={() => {}}
-                      onDrop={() => {}}
                     />
                   </CardContent>
                 </Card>
