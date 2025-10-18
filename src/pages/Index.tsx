@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-const easternTeams = [
+const defaultEasternTeams = [
   { pos: 1, team: 'Boston Bruins', games: 28, wins: 20, losses: 6, otl: 2, points: 42, streak: 'W3' },
   { pos: 2, team: 'Toronto Maple Leafs', games: 27, wins: 18, losses: 7, otl: 2, points: 38, streak: 'W2' },
   { pos: 3, team: 'Tampa Bay Lightning', games: 28, wins: 17, losses: 9, otl: 2, points: 36, streak: 'L1' },
@@ -23,7 +23,7 @@ const easternTeams = [
   { pos: 8, team: 'Detroit Red Wings', games: 27, wins: 10, losses: 15, otl: 2, points: 22, streak: 'L3' },
 ];
 
-const westernTeams = [
+const defaultWesternTeams = [
   { pos: 1, team: 'Vegas Golden Knights', games: 28, wins: 21, losses: 5, otl: 2, points: 44, streak: 'W5' },
   { pos: 2, team: 'Dallas Stars', games: 27, wins: 19, losses: 6, otl: 2, points: 40, streak: 'W2' },
   { pos: 3, team: 'Colorado Avalanche', games: 28, wins: 18, losses: 8, otl: 2, points: 38, streak: 'W3' },
@@ -34,9 +34,7 @@ const westernTeams = [
   { pos: 8, team: 'Vancouver Canucks', games: 27, wins: 11, losses: 14, otl: 2, points: 24, streak: 'L2' },
 ];
 
-const allTeams = [...easternTeams, ...westernTeams].sort((a, b) => b.points - a.points);
-
-const upcomingGames = [
+const defaultUpcomingGames = [
   { date: '19 окт', time: '19:00', home: 'Boston Bruins', away: 'Toronto Maple Leafs', status: 'Скоро' },
   { date: '19 окт', time: '21:30', home: 'Vegas Golden Knights', away: 'Dallas Stars', status: 'Скоро' },
   { date: '20 окт', time: '18:00', home: 'Tampa Bay Lightning', away: 'Florida Panthers', status: 'Завтра' },
@@ -45,7 +43,7 @@ const upcomingGames = [
   { date: '21 окт', time: '22:00', home: 'Los Angeles Kings', away: 'Seattle Kraken', status: '21 окт' },
 ];
 
-const playoffBracket = {
+const defaultPlayoffBracket = {
   eastern: {
     round1: [
       { team1: 'Boston Bruins', team2: 'Detroit Red Wings', score1: 4, score2: 1 },
@@ -72,7 +70,7 @@ const playoffBracket = {
   },
 };
 
-const rules = [
+const defaultRules = [
   {
     title: 'Формат игры',
     content: 'Матчи проводятся в формате 3 периода по 20 минут. При ничейном результате назначается овертайм 5 минут (3 на 3), затем буллиты.',
@@ -101,6 +99,27 @@ const rules = [
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('standings');
+  const [easternTeams, setEasternTeams] = useState(defaultEasternTeams);
+  const [westernTeams, setWesternTeams] = useState(defaultWesternTeams);
+  const [upcomingGames, setUpcomingGames] = useState(defaultUpcomingGames);
+  const [playoffBracket, setPlayoffBracket] = useState(defaultPlayoffBracket);
+  const [rules, setRules] = useState(defaultRules);
+
+  useEffect(() => {
+    const savedEastern = localStorage.getItem('easternTeams');
+    const savedWestern = localStorage.getItem('westernTeams');
+    const savedGames = localStorage.getItem('upcomingGames');
+    const savedPlayoff = localStorage.getItem('playoffBracket');
+    const savedRules = localStorage.getItem('rules');
+
+    if (savedEastern) setEasternTeams(JSON.parse(savedEastern));
+    if (savedWestern) setWesternTeams(JSON.parse(savedWestern));
+    if (savedGames) setUpcomingGames(JSON.parse(savedGames));
+    if (savedPlayoff) setPlayoffBracket(JSON.parse(savedPlayoff));
+    if (savedRules) setRules(JSON.parse(savedRules));
+  }, []);
+
+  const allTeams = [...easternTeams, ...westernTeams].sort((a, b) => b.points - a.points);
 
   return (
     <div className="min-h-screen bg-background">
