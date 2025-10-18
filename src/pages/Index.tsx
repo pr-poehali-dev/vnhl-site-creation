@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import Icon from '@/components/ui/icon';
+import { useNavigate } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -98,12 +100,14 @@ const defaultRules = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('standings');
   const [easternTeams, setEasternTeams] = useState(defaultEasternTeams);
   const [westernTeams, setWesternTeams] = useState(defaultWesternTeams);
   const [upcomingGames, setUpcomingGames] = useState(defaultUpcomingGames);
   const [playoffBracket, setPlayoffBracket] = useState(defaultPlayoffBracket);
   const [rules, setRules] = useState(defaultRules);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const savedEastern = localStorage.getItem('easternTeams');
@@ -121,16 +125,57 @@ const Index = () => {
 
   const allTeams = [...easternTeams, ...westernTeams].sort((a, b) => b.points - a.points);
 
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (dropIndex: number, conference: 'eastern' | 'western') => {
+    if (draggedIndex === null) return;
+
+    const teams = conference === 'eastern' ? [...easternTeams] : [...westernTeams];
+    const [draggedTeam] = teams.splice(draggedIndex, 1);
+    teams.splice(dropIndex, 0, draggedTeam);
+
+    const updatedTeams = teams.map((team, idx) => ({
+      ...team,
+      pos: idx + 1,
+    }));
+
+    if (conference === 'eastern') {
+      setEasternTeams(updatedTeams);
+      localStorage.setItem('easternTeams', JSON.stringify(updatedTeams));
+    } else {
+      setWesternTeams(updatedTeams);
+      localStorage.setItem('westernTeams', JSON.stringify(updatedTeams));
+    }
+
+    setDraggedIndex(null);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center gap-3">
-            <Icon name="Trophy" size={40} className="text-primary" />
-            <div>
-              <h1 className="text-4xl font-bold">VNHL</h1>
-              <p className="text-sm text-muted-foreground">Виртуальная Национальная Хоккейная Лига</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Icon name="Trophy" size={40} className="text-primary" />
+              <div>
+                <h1 className="text-4xl font-bold">VNHL</h1>
+                <p className="text-sm text-muted-foreground">Виртуальная Национальная Хоккейная Лига</p>
+              </div>
             </div>
+            <Button
+              variant="outline"
+              onClick={() => navigate('/admin')}
+              className="gap-2"
+            >
+              <Icon name="Settings" size={18} />
+              Админ-панель
+            </Button>
           </div>
         </div>
       </header>
@@ -187,10 +232,20 @@ const Index = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {easternTeams.map((team) => (
-                          <TableRow key={team.pos} className="hover:bg-muted/50 transition-colors">
+                        {easternTeams.map((team, index) => (
+                          <TableRow
+                            key={team.pos}
+                            draggable
+                            onDragStart={() => handleDragStart(index)}
+                            onDragOver={handleDragOver}
+                            onDrop={() => handleDrop(index, 'eastern')}
+                            className="hover:bg-muted/50 transition-colors cursor-move"
+                          >
                             <TableCell className="font-medium">{team.pos}</TableCell>
-                            <TableCell className="font-semibold">{team.team}</TableCell>
+                            <TableCell className="font-semibold flex items-center gap-2">
+                              <Icon name="GripVertical" size={16} className="text-muted-foreground" />
+                              {team.team}
+                            </TableCell>
                             <TableCell className="text-center">{team.games}</TableCell>
                             <TableCell className="text-center text-green-400">{team.wins}</TableCell>
                             <TableCell className="text-center text-red-400">{team.losses}</TableCell>
@@ -232,10 +287,20 @@ const Index = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {westernTeams.map((team) => (
-                          <TableRow key={team.pos} className="hover:bg-muted/50 transition-colors">
+                        {westernTeams.map((team, index) => (
+                          <TableRow
+                            key={team.pos}
+                            draggable
+                            onDragStart={() => handleDragStart(index)}
+                            onDragOver={handleDragOver}
+                            onDrop={() => handleDrop(index, 'western')}
+                            className="hover:bg-muted/50 transition-colors cursor-move"
+                          >
                             <TableCell className="font-medium">{team.pos}</TableCell>
-                            <TableCell className="font-semibold">{team.team}</TableCell>
+                            <TableCell className="font-semibold flex items-center gap-2">
+                              <Icon name="GripVertical" size={16} className="text-muted-foreground" />
+                              {team.team}
+                            </TableCell>
                             <TableCell className="text-center">{team.games}</TableCell>
                             <TableCell className="text-center text-green-400">{team.wins}</TableCell>
                             <TableCell className="text-center text-red-400">{team.losses}</TableCell>
