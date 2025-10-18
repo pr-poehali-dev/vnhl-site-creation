@@ -45,7 +45,9 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
     );
   };
 
-  const renderRound = (title: string, matches: PlayoffMatch[]) => {
+  const renderRound = (title: string, matches?: PlayoffMatch[]) => {
+    if (!matches || !Array.isArray(matches)) return null;
+    
     const validMatches = matches.filter(m => m.team1 || m.team2);
     if (validMatches.length === 0) return null;
 
@@ -69,10 +71,10 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {renderRound('1/8 финала', bracket.eastern.round1)}
-          {renderRound('1/4 финала', bracket.eastern.round2)}
-          {renderRound('1/2 финала', bracket.eastern.round3)}
-          {renderRound('Финал конференции', bracket.eastern.final)}
+          {renderRound('1/8 финала', bracket?.eastern?.round1)}
+          {renderRound('1/4 финала', bracket?.eastern?.round2)}
+          {renderRound('1/2 финала', bracket?.eastern?.round3)}
+          {renderRound('Финал конференции', bracket?.eastern?.final)}
         </CardContent>
       </Card>
 
@@ -84,10 +86,10 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          {renderRound('1/8 финала', bracket.western.round1)}
-          {renderRound('1/4 финала', bracket.western.round2)}
-          {renderRound('1/2 финала', bracket.western.round3)}
-          {renderRound('Финал конференции', bracket.western.final)}
+          {renderRound('1/8 финала', bracket?.western?.round1)}
+          {renderRound('1/4 финала', bracket?.western?.round2)}
+          {renderRound('1/2 финала', bracket?.western?.round3)}
+          {renderRound('Финал конференции', bracket?.western?.final)}
         </CardContent>
       </Card>
     </div>
