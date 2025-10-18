@@ -77,6 +77,36 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
     );
   };
 
+  const hasAnyMatches = () => {
+    if (!bracket) return false;
+    
+    const checkRounds = (conference?: ConferenceBracket) => {
+      if (!conference) return false;
+      return (
+        (conference.round1 && conference.round1.length > 0) ||
+        (conference.round2 && conference.round2.length > 0) ||
+        (conference.round3 && conference.round3.length > 0) ||
+        (conference.final && conference.final.length > 0)
+      );
+    };
+
+    return (
+      checkRounds(bracket.eastern) ||
+      checkRounds(bracket.western) ||
+      (bracket.grandFinal && bracket.grandFinal.length > 0)
+    );
+  };
+
+  if (!hasAnyMatches()) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <Icon name="Trophy" size={64} className="text-muted-foreground/50 mb-4" />
+        <h3 className="text-2xl font-bold mb-2">Ожидайте</h3>
+        <p className="text-muted-foreground text-lg">Плей-офф скоро начнётся</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
