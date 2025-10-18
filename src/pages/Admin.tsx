@@ -15,7 +15,7 @@ import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, default
 import CaptainsEditor from '@/components/admin/CaptainsEditor';
 import { hashPassword, checkRateLimit, recordLoginAttempt, validateSession, setSecureSession, clearSecureSession, sanitizeInput } from '@/utils/security';
 
-const ADMIN_PASSWORD_HASH = 'a3d8f9c7e2b1a4d6f8e9c7b2a1d3f5e8c9b7a2d4f6e8c1b3a5d7f9e2c4b6a8d1';
+const ADMIN_PASSWORD_HASH = 'b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c3d2e1f0a9b8c7';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -72,6 +72,10 @@ const Admin = () => {
     if (validateSession()) {
       setIsAuthenticated(true);
     }
+    
+    hashPassword('55935589k').then(hash => {
+      console.log('Correct hash for password 55935589k:', hash);
+    });
   }, []);
 
   useEffect(() => {
@@ -122,6 +126,8 @@ const Admin = () => {
     }
     
     const passwordHash = await hashPassword(sanitizedPassword);
+    console.log('Entered password hash:', passwordHash);
+    console.log('Expected hash:', ADMIN_PASSWORD_HASH);
     const isValid = passwordHash === ADMIN_PASSWORD_HASH;
     
     recordLoginAttempt('admin_login', isValid);
