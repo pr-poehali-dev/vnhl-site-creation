@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import { useNavigate } from 'react-router-dom';
 import StandingsTable from '@/components/vnhl/StandingsTable';
@@ -26,6 +34,13 @@ const Index = () => {
   const [rules, setRules] = useState(defaultRules);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [siteTitle, setSiteTitle] = useState('VNHL');
+  const [siteSubtitle, setSiteSubtitle] = useState('Виртуальная Национальная Хоккейная Лига');
+  const [siteIcon, setSiteIcon] = useState('Trophy');
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [tempTitle, setTempTitle] = useState('');
+  const [tempSubtitle, setTempSubtitle] = useState('');
+  const [tempIcon, setTempIcon] = useState('');
 
   useEffect(() => {
     const savedEastern = localStorage.getItem('easternTeams');
@@ -33,6 +48,9 @@ const Index = () => {
     const savedGames = localStorage.getItem('upcomingGames');
     const savedPlayoff = localStorage.getItem('playoffBracket');
     const savedRules = localStorage.getItem('rules');
+    const savedSiteTitle = localStorage.getItem('siteTitle');
+    const savedSiteSubtitle = localStorage.getItem('siteSubtitle');
+    const savedSiteIcon = localStorage.getItem('siteIcon');
     const adminAuth = sessionStorage.getItem('adminAuth');
 
     if (savedEastern) setEasternTeams(JSON.parse(savedEastern));
@@ -40,6 +58,9 @@ const Index = () => {
     if (savedGames) setUpcomingGames(JSON.parse(savedGames));
     if (savedPlayoff) setPlayoffBracket(JSON.parse(savedPlayoff));
     if (savedRules) setRules(JSON.parse(savedRules));
+    if (savedSiteTitle) setSiteTitle(savedSiteTitle);
+    if (savedSiteSubtitle) setSiteSubtitle(savedSiteSubtitle);
+    if (savedSiteIcon) setSiteIcon(savedSiteIcon);
     if (adminAuth === 'true') setIsAdmin(true);
   }, []);
 
@@ -78,16 +99,45 @@ const Index = () => {
     setDraggedIndex(null);
   };
 
+  const handleEditSite = () => {
+    setTempTitle(siteTitle);
+    setTempSubtitle(siteSubtitle);
+    setTempIcon(siteIcon);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveSiteSettings = () => {
+    setSiteTitle(tempTitle);
+    setSiteSubtitle(tempSubtitle);
+    setSiteIcon(tempIcon);
+    localStorage.setItem('siteTitle', tempTitle);
+    localStorage.setItem('siteSubtitle', tempSubtitle);
+    localStorage.setItem('siteIcon', tempIcon);
+    setIsEditDialogOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Icon name="Trophy" size={40} className="text-primary" />
+              <Icon name={siteIcon} size={40} className="text-primary" />
               <div>
-                <h1 className="text-4xl font-bold">VNHL</h1>
-                <p className="text-sm text-muted-foreground">Виртуальная Национальная Хоккейная Лига</p>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-4xl font-bold">{siteTitle}</h1>
+                  {isAdmin && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleEditSite}
+                      className="gap-1 h-8"
+                    >
+                      <Icon name="Pencil" size={14} />
+                    </Button>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground">{siteSubtitle}</p>
               </div>
             </div>
             {!isAdmin ? (
@@ -125,6 +175,59 @@ const Index = () => {
           </div>
         </div>
       </header>
+
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Изменить название и иконку сайта</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Название сайта</label>
+              <Input
+                value={tempTitle}
+                onChange={(e) => setTempTitle(e.target.value)}
+                placeholder="VNHL"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Подзаголовок</label>
+              <Input
+                value={tempSubtitle}
+                onChange={(e) => setTempSubtitle(e.target.value)}
+                placeholder="Виртуальная Национальная Хоккейная Лига"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Название иконки (lucide-react)</label>
+              <div className="flex gap-2">
+                <Input
+                  value={tempIcon}
+                  onChange={(e) => setTempIcon(e.target.value)}
+                  placeholder="Trophy"
+                />
+                <div className="flex items-center justify-center w-12 h-12 border rounded-lg">
+                  <Icon name={tempIcon} size={24} className="text-primary" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Примеры: Trophy, Medal, Award, Flame, Zap, Star
+              </p>
+            </div>
+            <div className="flex justify-end gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => setIsEditDialogOpen(false)}
+              >
+                Отмена
+              </Button>
+              <Button onClick={handleSaveSiteSettings}>
+                Сохранить
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
