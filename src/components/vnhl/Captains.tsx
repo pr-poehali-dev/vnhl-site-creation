@@ -292,7 +292,8 @@ const Captains = ({ captains, isAdmin, onUpdate }: CaptainsProps) => {
         <Card>
           <CardContent className="p-12 text-center">
             <Icon name="Users" size={48} className="mx-auto mb-4 text-muted-foreground/30" />
-            <p className="text-muted-foreground">Пока нет капитанов</p>
+            <h3 className="text-xl font-semibold mb-2">Сейчас нет Капитанов Команд</h3>
+            <p className="text-muted-foreground">Ожидайте, они скоро появятся</p>
           </CardContent>
         </Card>
       )}
