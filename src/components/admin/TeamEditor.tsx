@@ -97,9 +97,8 @@ const TeamEditor = ({
           <TableHead>И</TableHead>
           <TableHead>В</TableHead>
           <TableHead>П</TableHead>
-          <TableHead>ОТ</TableHead>
           <TableHead>О</TableHead>
-          <TableHead>Серия</TableHead>
+          <TableHead>Плей-Офф</TableHead>
           <TableHead>Действия</TableHead>
         </TableRow>
       </TableHeader>
@@ -111,7 +110,6 @@ const TeamEditor = ({
             <TableCell>{team.games}</TableCell>
             <TableCell>{team.wins}</TableCell>
             <TableCell>{team.losses}</TableCell>
-            <TableCell>{team.otl}</TableCell>
             <TableCell>{team.points}</TableCell>
             <TableCell>{team.streak}</TableCell>
             <TableCell>
@@ -173,16 +171,6 @@ const TeamEditor = ({
                             />
                           </div>
                           <div>
-                            <Label>Овертаймы</Label>
-                            <Input
-                              type="number"
-                              value={editTeam.otl}
-                              onChange={(e) =>
-                                setEditTeam({ ...editTeam, otl: parseInt(e.target.value) })
-                              }
-                            />
-                          </div>
-                          <div>
                             <Label>Очки</Label>
                             <Input
                               type="number"
@@ -193,7 +181,7 @@ const TeamEditor = ({
                             />
                           </div>
                           <div>
-                            <Label>Серия</Label>
+                            <Label>Плей-Офф</Label>
                             <Input
                               value={editTeam.streak}
                               onChange={(e) =>
