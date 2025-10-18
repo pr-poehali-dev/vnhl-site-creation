@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface PlayoffMatch {
   team1: string;
@@ -17,15 +18,13 @@ interface PlayoffBracket {
     round1: PlayoffMatch[];
     round2: PlayoffMatch[];
     round3: PlayoffMatch[];
-    final: PlayoffMatch[];
   };
   western: {
     round1: PlayoffMatch[];
     round2: PlayoffMatch[];
     round3: PlayoffMatch[];
-    final: PlayoffMatch[];
   };
-  grandFinal?: PlayoffMatch[];
+  champion?: string;
 }
 
 interface PlayoffEditorProps {
@@ -34,79 +33,63 @@ interface PlayoffEditorProps {
 }
 
 const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) => {
+  const [championName, setChampionName] = useState(playoffBracket.champion || '');
+
   const updateMatch = (
-    conference: 'eastern' | 'western' | 'grandFinal',
-    round: 'round1' | 'round2' | 'round3' | 'final' | 'grandFinal',
+    conference: 'eastern' | 'western',
+    round: 'round1' | 'round2' | 'round3',
     index: number,
     field: keyof PlayoffMatch,
     value: string | number
   ) => {
     const updated = { ...playoffBracket };
-    
-    if (conference === 'grandFinal') {
-      if (!updated.grandFinal) updated.grandFinal = [];
-      updated.grandFinal[index] = {
-        ...updated.grandFinal[index],
-        [field]: value,
-      };
-    } else {
-      updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'][index] = {
-        ...updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'][index],
-        [field]: value,
-      };
-    }
-    
+    updated[conference][round][index] = {
+      ...updated[conference][round][index],
+      [field]: value,
+    };
     onUpdatePlayoff(updated);
   };
 
-  const addMatch = (conference: 'eastern' | 'western' | 'grandFinal', round: 'round1' | 'round2' | 'round3' | 'final' | 'grandFinal') => {
+  const addMatch = (conference: 'eastern' | 'western', round: 'round1' | 'round2' | 'round3') => {
     const updated = { ...playoffBracket };
-    
-    if (conference === 'grandFinal') {
-      if (!updated.grandFinal) updated.grandFinal = [];
-      updated.grandFinal.push({
-        team1: '',
-        team2: '',
-        score1: 0,
-        score2: 0,
-      });
-    } else {
-      if (!updated[conference]) updated[conference] = {};
-      if (!updated[conference][round as 'round1' | 'round2' | 'round3' | 'final']) {
-        updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'] = [];
-      }
-      updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'].push({
-        team1: '',
-        team2: '',
-        score1: 0,
-        score2: 0,
-      });
+    if (!updated[conference][round]) {
+      updated[conference][round] = [];
     }
-    
+    updated[conference][round].push({
+      team1: '',
+      team2: '',
+      score1: 0,
+      score2: 0,
+    });
     onUpdatePlayoff(updated);
     toast.success('Матч добавлен');
   };
 
-  const deleteMatch = (conference: 'eastern' | 'western' | 'grandFinal', round: 'round1' | 'round2' | 'round3' | 'final' | 'grandFinal', index: number) => {
+  const deleteMatch = (conference: 'eastern' | 'western', round: 'round1' | 'round2' | 'round3', index: number) => {
     const updated = { ...playoffBracket };
-    
-    if (conference === 'grandFinal') {
-      if (updated.grandFinal) {
-        updated.grandFinal = updated.grandFinal.filter((_, i) => i !== index);
-      }
-    } else {
-      updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'] = 
-        updated[conference][round as 'round1' | 'round2' | 'round3' | 'final'].filter((_, i) => i !== index);
-    }
-    
+    updated[conference][round] = updated[conference][round].filter((_, i) => i !== index);
     onUpdatePlayoff(updated);
     toast.success('Матч удалён');
   };
 
+  const updateChampion = () => {
+    const updated = { ...playoffBracket, champion: championName };
+    onUpdatePlayoff(updated);
+    toast.success('Чемпион обновлён');
+  };
+
+  const clearChampion = () => {
+    const updated = { ...playoffBracket };
+    delete updated.champion;
+    setChampionName('');
+    onUpdatePlayoff(updated);
+    toast.success('Чемпион удалён');
+  };
+
   const renderMatchInputs = (
     match: PlayoffMatch,
-    conference: 'eastern' | 'western' | 'grandFinal',
-    round: 'round1' | 'round2' | 'round3' | 'final' | 'grandFinal',
+    conference: 'eastern' | 'western',
+    round: 'round1' | 'round2' | 'round3',
     index: number
   ) => (
     <div className="p-4 border rounded-lg space-y-3 bg-card/50">
@@ -169,8 +152,8 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
   );
 
   const renderRound = (
-    conference: 'eastern' | 'western' | 'grandFinal',
-    round: 'round1' | 'round2' | 'round3' | 'final' | 'grandFinal',
+    conference: 'eastern' | 'western',
+    round: 'round1' | 'round2' | 'round3',
     title: string,
     matches: PlayoffMatch[] = []
   ) => (
@@ -209,8 +192,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
         <CardContent className="space-y-6">
           {renderRound('eastern', 'round1', '1/8 финала (Раунд 1)', playoffBracket.eastern.round1)}
           {renderRound('eastern', 'round2', '1/4 финала (Раунд 2)', playoffBracket.eastern.round2)}
-          {renderRound('eastern', 'round3', '1/2 финала (Раунд 3)', playoffBracket.eastern.round3)}
-          {renderRound('eastern', 'final', 'Финал конференции', playoffBracket.eastern.final)}
+          {renderRound('eastern', 'round3', 'Полуфинал (Раунд 3)', playoffBracket.eastern.round3)}
         </CardContent>
       </Card>
 
@@ -224,8 +206,7 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
         <CardContent className="space-y-6">
           {renderRound('western', 'round1', '1/8 финала (Раунд 1)', playoffBracket.western.round1)}
           {renderRound('western', 'round2', '1/4 финала (Раунд 2)', playoffBracket.western.round2)}
-          {renderRound('western', 'round3', '1/2 финала (Раунд 3)', playoffBracket.western.round3)}
-          {renderRound('western', 'final', 'Финал конференции', playoffBracket.western.final)}
+          {renderRound('western', 'round3', 'Полуфинал (Раунд 3)', playoffBracket.western.round3)}
         </CardContent>
       </Card>
 
@@ -233,24 +214,39 @@ const PlayoffEditor = ({ playoffBracket, onUpdatePlayoff }: PlayoffEditorProps) 
         <CardHeader>
           <CardTitle className="flex items-center gap-2 justify-center text-xl">
             <Icon name="Trophy" size={28} className="text-primary" />
-            Главный Финал VNHL
+            Чемпион VNHL
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {playoffBracket.grandFinal && playoffBracket.grandFinal.length > 0 
-            ? renderRound('grandFinal', 'grandFinal', 'Чемпион VNHL', playoffBracket.grandFinal)
-            : (
-              <div className="text-center py-4">
-                <Button
-                  variant="outline"
-                  onClick={() => addMatch('grandFinal', 'grandFinal')}
-                >
-                  <Icon name="Plus" size={18} className="mr-2" />
-                  Добавить главный финал
+          <div className="max-w-md mx-auto space-y-4">
+            <div>
+              <Label>Название команды-чемпиона</Label>
+              <Input
+                value={championName}
+                onChange={(e) => setChampionName(e.target.value)}
+                placeholder="Vegas Golden Knights"
+                className="text-lg"
+              />
+            </div>
+            <div className="flex gap-2">
+              <Button onClick={updateChampion} className="flex-1">
+                <Icon name="Check" size={16} className="mr-2" />
+                Сохранить чемпиона
+              </Button>
+              {playoffBracket.champion && (
+                <Button onClick={clearChampion} variant="destructive">
+                  <Icon name="Trash2" size={16} className="mr-2" />
+                  Удалить
                 </Button>
+              )}
+            </div>
+            {playoffBracket.champion && (
+              <div className="text-center py-4 bg-primary/10 rounded-lg">
+                <p className="text-sm text-muted-foreground mb-1">Текущий чемпион:</p>
+                <p className="text-2xl font-bold text-primary">{playoffBracket.champion}</p>
               </div>
-            )
-          }
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>

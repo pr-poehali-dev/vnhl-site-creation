@@ -13,14 +13,13 @@ interface ConferenceBracket {
   round1: PlayoffMatch[];
   round2: PlayoffMatch[];
   round3: PlayoffMatch[];
-  final: PlayoffMatch[];
 }
 
 interface PlayoffBracketProps {
   bracket: {
     eastern: ConferenceBracket;
     western: ConferenceBracket;
-    grandFinal?: PlayoffMatch[];
+    champion?: string;
   };
 }
 
@@ -85,15 +84,14 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
       return (
         (conference.round1 && conference.round1.length > 0) ||
         (conference.round2 && conference.round2.length > 0) ||
-        (conference.round3 && conference.round3.length > 0) ||
-        (conference.final && conference.final.length > 0)
+        (conference.round3 && conference.round3.length > 0)
       );
     };
 
     return (
       checkRounds(bracket.eastern) ||
       checkRounds(bracket.western) ||
-      (bracket.grandFinal && bracket.grandFinal.length > 0)
+      !!bracket.champion
     );
   };
 
@@ -120,8 +118,7 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           <CardContent className="space-y-6">
             {renderRound('1/8 финала', bracket?.eastern?.round1)}
             {renderRound('1/4 финала', bracket?.eastern?.round2)}
-            {renderRound('1/2 финала', bracket?.eastern?.round3)}
-            {renderRound('Финал конференции', bracket?.eastern?.final)}
+            {renderRound('Полуфинал', bracket?.eastern?.round3)}
           </CardContent>
         </Card>
 
@@ -135,23 +132,23 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
           <CardContent className="space-y-6">
             {renderRound('1/8 финала', bracket?.western?.round1)}
             {renderRound('1/4 финала', bracket?.western?.round2)}
-            {renderRound('1/2 финала', bracket?.western?.round3)}
-            {renderRound('Финал конференции', bracket?.western?.final)}
+            {renderRound('Полуфинал', bracket?.western?.round3)}
           </CardContent>
         </Card>
       </div>
 
-      {bracket?.grandFinal && bracket.grandFinal.length > 0 && (
-        <Card className="border-2 border-primary">
+      {bracket?.champion && (
+        <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 justify-center text-2xl">
-              <Icon name="Trophy" size={32} className="text-primary" />
-              Главный Финал VNHL
+            <CardTitle className="flex items-center gap-3 justify-center text-3xl">
+              <Icon name="Trophy" size={40} className="text-primary" />
+              Чемпион VNHL
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="max-w-md mx-auto">
-              {renderRound('Чемпион VNHL', bracket.grandFinal)}
+            <div className="text-center py-6">
+              <h2 className="text-4xl font-bold text-primary mb-2">{bracket.champion}</h2>
+              <p className="text-muted-foreground text-lg">Победитель сезона</p>
             </div>
           </CardContent>
         </Card>
