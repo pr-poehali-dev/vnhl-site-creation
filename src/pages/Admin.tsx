@@ -273,16 +273,16 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Icon name="Settings" size={40} className="text-primary" />
-              <div>
-                <h1 className="text-4xl font-bold">Админ-панель</h1>
-                <p className="text-sm text-muted-foreground">Управление данными VNHL</p>
+        <div className="container mx-auto px-4 py-4 md:py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-3 md:gap-0">
+            <div className="flex items-center gap-2 md:gap-3">
+              <Icon name="Settings" size={32} className="text-primary md:w-10 md:h-10" />
+              <div className="text-center md:text-left">
+                <h1 className="text-2xl md:text-4xl font-bold">Админ-панель</h1>
+                <p className="text-xs md:text-sm text-muted-foreground">Управление данными VNHL</p>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
               <Button 
                 variant="outline"
                 onClick={() => {
@@ -300,16 +300,19 @@ const Admin = () => {
                     toast.success('Данные сброшены');
                   }
                 }}
+                className="w-full md:w-auto gap-2 text-xs md:text-sm"
               >
-                <Icon name="RotateCcw" size={18} className="mr-2" />
-                Сбросить данные
+                <Icon name="RotateCcw" size={16} className="md:w-[18px] md:h-[18px]" />
+                <span className="hidden sm:inline">Сбросить данные</span>
+                <span className="sm:hidden">Сброс</span>
               </Button>
-              <Button variant="outline" onClick={() => navigate('/')}>
-                <Icon name="Home" size={18} className="mr-2" />
-                На главную
+              <Button variant="outline" onClick={() => navigate('/')} className="w-full md:w-auto gap-2 text-xs md:text-sm">
+                <Icon name="Home" size={16} className="md:w-[18px] md:h-[18px]" />
+                <span className="hidden sm:inline">На главную</span>
+                <span className="sm:hidden">Главная</span>
               </Button>
-              <Button variant="destructive" onClick={handleLogout}>
-                <Icon name="LogOut" size={18} className="mr-2" />
+              <Button variant="destructive" onClick={handleLogout} className="w-full md:w-auto gap-2 text-xs md:text-sm">
+                <Icon name="LogOut" size={16} className="md:w-[18px] md:h-[18px]" />
                 Выйти
               </Button>
             </div>
@@ -317,28 +320,28 @@ const Admin = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-2 md:px-4 py-4 md:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="teams" className="gap-2">
-              <Icon name="Users" size={18} />
-              Команды
+          <TabsList className="grid w-full grid-cols-5 mb-4 md:mb-8 text-xs md:text-sm">
+            <TabsTrigger value="teams" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="Users" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="text-[10px] md:text-sm">Команды</span>
             </TabsTrigger>
-            <TabsTrigger value="games" className="gap-2">
-              <Icon name="Calendar" size={18} />
-              Календарь
+            <TabsTrigger value="games" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="Calendar" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="text-[10px] md:text-sm">Календарь</span>
             </TabsTrigger>
-            <TabsTrigger value="playoff" className="gap-2">
-              <Icon name="Zap" size={18} />
-              Плей-офф
+            <TabsTrigger value="playoff" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="Zap" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="text-[10px] md:text-sm">Плей-офф</span>
             </TabsTrigger>
-            <TabsTrigger value="captains" className="gap-2">
-              <Icon name="Shield" size={18} />
-              Кэпы
+            <TabsTrigger value="captains" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="Shield" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="text-[10px] md:text-sm">Кэпы</span>
             </TabsTrigger>
-            <TabsTrigger value="rules" className="gap-2">
-              <Icon name="BookOpen" size={18} />
-              Правила
+            <TabsTrigger value="rules" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="BookOpen" size={16} className="md:w-[18px] md:h-[18px]" />
+              <span className="text-[10px] md:text-sm">Правила</span>
             </TabsTrigger>
           </TabsList>
 

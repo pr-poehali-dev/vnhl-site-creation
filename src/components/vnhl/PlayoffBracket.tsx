@@ -108,16 +108,16 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-6">
+    <div className="space-y-4 md:space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Compass" size={24} className="text-primary" />
+            <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+              <Icon name="Compass" size={20} className="text-primary md:w-6 md:h-6" />
               Восточная конференция
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-3 md:space-y-6">
             {renderRound('1/8 финала', bracket?.eastern?.round1)}
             {renderRound('1/4 финала', bracket?.eastern?.round2)}
             {renderRound('Полуфинал', bracket?.eastern?.round3)}
@@ -126,12 +126,12 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Icon name="Compass" size={24} className="text-secondary" />
+            <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+              <Icon name="Compass" size={20} className="text-secondary md:w-6 md:h-6" />
               Западная конференция
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-3 md:space-y-6">
             {renderRound('1/8 финала', bracket?.western?.round1)}
             {renderRound('1/4 финала', bracket?.western?.round2)}
             {renderRound('Полуфинал', bracket?.western?.round3)}
@@ -142,8 +142,8 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
       {bracket?.final && bracket.final.length > 0 && (
         <Card className="border-2 border-primary">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3 justify-center text-2xl">
-              <Icon name="Trophy" size={32} className="text-primary" />
+            <CardTitle className="flex items-center gap-2 md:gap-3 justify-center text-lg md:text-2xl">
+              <Icon name="Trophy" size={24} className="text-primary md:w-8 md:h-8" />
               Главный Финал VNHL
             </CardTitle>
           </CardHeader>
@@ -158,15 +158,15 @@ const PlayoffBracket = ({ bracket }: PlayoffBracketProps) => {
       {bracket?.champion && (
         <Card className="border-2 border-primary bg-gradient-to-br from-primary/10 to-primary/5">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3 justify-center text-3xl">
-              <Icon name="Trophy" size={40} className="text-primary" />
+            <CardTitle className="flex items-center gap-2 md:gap-3 justify-center text-xl md:text-3xl">
+              <Icon name="Trophy" size={32} className="text-primary md:w-10 md:h-10" />
               Чемпион VNHL
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-6">
-              <h2 className="text-4xl font-bold text-primary mb-2">{bracket.champion}</h2>
-              <p className="text-muted-foreground text-lg">Победитель сезона</p>
+            <div className="text-center py-4 md:py-6">
+              <h2 className="text-2xl md:text-4xl font-bold text-primary mb-2">{bracket.champion}</h2>
+              <p className="text-muted-foreground text-sm md:text-lg">Победитель сезона</p>
             </div>
           </CardContent>
         </Card>

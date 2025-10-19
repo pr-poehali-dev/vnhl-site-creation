@@ -46,17 +46,17 @@ const StandingsTable = ({
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-[600px]">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-12">#</TableHead>
-            <TableHead>Команда</TableHead>
-            <TableHead className="text-center">И</TableHead>
-            <TableHead className="text-center">В</TableHead>
-            <TableHead className="text-center">П</TableHead>
-            <TableHead className="text-center font-bold">О</TableHead>
-            <TableHead className="text-center">Плей-Офф</TableHead>
+            <TableHead className="w-8 md:w-12 text-xs md:text-sm">#</TableHead>
+            <TableHead className="text-xs md:text-sm">Команда</TableHead>
+            <TableHead className="text-center text-xs md:text-sm">И</TableHead>
+            <TableHead className="text-center text-xs md:text-sm">В</TableHead>
+            <TableHead className="text-center text-xs md:text-sm">П</TableHead>
+            <TableHead className="text-center font-bold text-xs md:text-sm">О</TableHead>
+            <TableHead className="text-center text-xs md:text-sm">Плей-Офф</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -69,17 +69,17 @@ const StandingsTable = ({
               onDrop={() => onDrop(index)}
               className={`hover:bg-muted/50 transition-colors ${isAdmin ? 'cursor-move' : ''}`}
             >
-              <TableCell className="font-medium">{team.pos}</TableCell>
-              <TableCell className="font-semibold flex items-center gap-2">
-                {isAdmin && <Icon name="GripVertical" size={16} className="text-muted-foreground" />}
-                {team.team}
+              <TableCell className="font-medium text-xs md:text-sm">{team.pos}</TableCell>
+              <TableCell className="font-semibold flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+                {isAdmin && <Icon name="GripVertical" size={14} className="text-muted-foreground md:w-4 md:h-4" />}
+                <span className="truncate max-w-[120px] md:max-w-none">{team.team}</span>
               </TableCell>
-              <TableCell className="text-center">{team.games}</TableCell>
-              <TableCell className="text-center text-green-400">{team.wins}</TableCell>
-              <TableCell className="text-center text-red-400">{team.losses}</TableCell>
-              <TableCell className="text-center font-bold text-primary">{team.points}</TableCell>
+              <TableCell className="text-center text-xs md:text-sm">{team.games}</TableCell>
+              <TableCell className="text-center text-green-400 text-xs md:text-sm">{team.wins}</TableCell>
+              <TableCell className="text-center text-red-400 text-xs md:text-sm">{team.losses}</TableCell>
+              <TableCell className="text-center font-bold text-primary text-xs md:text-sm">{team.points}</TableCell>
               <TableCell className="text-center">
-                <Badge variant={team.streak.startsWith('W') ? 'default' : 'secondary'}>
+                <Badge variant={team.streak.startsWith('W') ? 'default' : 'secondary'} className="text-[10px] md:text-xs px-1 md:px-2">
                   {team.streak}
                 </Badge>
               </TableCell>

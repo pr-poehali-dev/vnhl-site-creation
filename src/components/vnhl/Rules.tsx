@@ -58,7 +58,7 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
   if (!rules || rules.length === 0) {
     return (
       <Card>
-        <CardContent className="p-12 text-center relative">
+        <CardContent className="p-6 md:p-12 text-center relative">
           {isAdmin && (
             <Dialog open={isEditMessageOpen} onOpenChange={setIsEditMessageOpen}>
               <DialogTrigger asChild>
@@ -107,25 +107,26 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
               </DialogContent>
             </Dialog>
           )}
-          <Icon name="BookOpen" size={64} className="text-muted-foreground/50 mb-4 mx-auto" />
-          <h3 className="text-2xl font-bold mb-2">{emptyMessage.title}</h3>
-          <p className="text-muted-foreground text-lg">{emptyMessage.subtitle}</p>
+          <Icon name="BookOpen" size={48} className="text-muted-foreground/50 mb-4 mx-auto md:w-16 md:h-16" />
+          <h3 className="text-xl md:text-2xl font-bold mb-2">{emptyMessage.title}</h3>
+          <p className="text-muted-foreground text-sm md:text-lg">{emptyMessage.subtitle}</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 md:space-y-4">
       <div className="flex justify-end">
         <Button
           variant="outline"
           size="sm"
           onClick={allExpanded ? collapseAll : expandAll}
-          className="gap-2"
+          className="gap-1 md:gap-2 text-xs md:text-sm"
         >
-          <Icon name={allExpanded ? "ChevronsUp" : "ChevronsDown"} size={16} />
-          {allExpanded ? 'Свернуть все' : 'Развернуть все'}
+          <Icon name={allExpanded ? "ChevronsUp" : "ChevronsDown"} size={14} className="md:w-4 md:h-4" />
+          <span className="hidden sm:inline">{allExpanded ? 'Свернуть все' : 'Развернуть все'}</span>
+          <Icon name={allExpanded ? "ChevronsUp" : "ChevronsDown"} size={14} className="sm:hidden" />
         </Button>
       </div>
       <div className="grid gap-3">
@@ -135,22 +136,22 @@ const Rules = ({ rules, isAdmin = false, emptyMessage, onUpdateEmptyMessage }: R
           className="hover:shadow-md transition-all cursor-pointer overflow-hidden"
           onClick={() => toggleRule(idx)}
         >
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center justify-between text-lg">
-              <div className="flex items-center gap-2">
-                <Icon name="FileText" size={18} className="text-primary" />
+          <CardHeader className="pb-2 md:pb-3">
+            <CardTitle className="flex items-center justify-between text-sm md:text-lg">
+              <div className="flex items-center gap-1 md:gap-2">
+                <Icon name="FileText" size={16} className="text-primary md:w-[18px] md:h-[18px]" />
                 {rule.title}
               </div>
               <Icon 
                 name={openRules.has(idx) ? "ChevronUp" : "ChevronDown"} 
-                size={20} 
-                className="text-muted-foreground transition-transform"
+                size={18} 
+                className="text-muted-foreground transition-transform md:w-5 md:h-5"
               />
             </CardTitle>
           </CardHeader>
           {openRules.has(idx) && (
-            <CardContent className="pt-0 pb-4 animate-in slide-in-from-top-2">
-              <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+            <CardContent className="pt-0 pb-3 md:pb-4 animate-in slide-in-from-top-2">
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-line text-xs md:text-base">
                 {rule.content}
               </p>
             </CardContent>

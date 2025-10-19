@@ -161,17 +161,17 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card/50 backdrop-blur">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <div className="container mx-auto px-4 py-4 md:py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
               {iconType === 'custom' && customIconUrl ? (
-                <img src={customIconUrl} alt="Logo" className="w-10 h-10 object-contain" />
+                <img src={customIconUrl} alt="Logo" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
               ) : (
-                <Icon name={siteIcon} size={40} className="text-primary" />
+                <Icon name={siteIcon} size={window.innerWidth < 768 ? 32 : 40} className="text-primary" />
               )}
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-4xl font-bold">{siteTitle}</h1>
+              <div className="text-center md:text-left">
+                <div className="flex items-center gap-2 justify-center md:justify-start">
+                  <h1 className="text-2xl md:text-4xl font-bold">{siteTitle}</h1>
                   {isAdmin && (
                     <Button
                       variant="ghost"
@@ -190,20 +190,21 @@ const Index = () => {
               <Button
                 variant="outline"
                 onClick={() => navigate('/admin')}
-                className="gap-2"
+                className="gap-2 w-full md:w-auto"
               >
                 <Icon name="Settings" size={18} />
-                Админ-панель
+                <span className="hidden sm:inline">Админ-панель</span>
+                <Icon name="Settings" size={18} className="sm:hidden" />
               </Button>
             ) : (
-              <div className="flex gap-2">
+              <div className="flex gap-2 w-full md:w-auto">
                 <Button
                   variant="outline"
                   onClick={() => navigate('/admin')}
-                  className="gap-2"
+                  className="gap-2 flex-1 md:flex-none"
                 >
                   <Icon name="Settings" size={18} />
-                  Админ-панель
+                  <span className="hidden sm:inline">Админ-панель</span>
                 </Button>
                 <Button
                   variant="destructive"
@@ -342,39 +343,40 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-2 md:px-4 py-4 md:py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="standings" className="gap-2">
-              <Icon name="BarChart3" size={18} />
-              Таблицы
+          <TabsList className="grid w-full grid-cols-5 mb-4 md:mb-8 text-xs md:text-sm">
+            <TabsTrigger value="standings" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="BarChart3" size={18} className="md:w-[18px] md:h-[18px] w-5 h-5" />
+              <span className="text-[10px] md:text-sm">Таблицы</span>
             </TabsTrigger>
-            <TabsTrigger value="playoff" className="gap-2">
-              <Icon name="Zap" size={18} />
-              Плей-офф
+            <TabsTrigger value="playoff" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="Zap" size={18} className="md:w-[18px] md:h-[18px] w-5 h-5" />
+              <span className="text-[10px] md:text-sm">Плей-офф</span>
             </TabsTrigger>
-            <TabsTrigger value="schedule" className="gap-2">
-              <Icon name="Calendar" size={18} />
-              Календарь
+            <TabsTrigger value="schedule" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="Calendar" size={18} className="md:w-[18px] md:h-[18px] w-5 h-5" />
+              <span className="text-[10px] md:text-sm">Календарь</span>
             </TabsTrigger>
-            <TabsTrigger value="captains" className="gap-2">
-              <Icon name="Users" size={18} />
-              Кэпы
+            <TabsTrigger value="captains" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="Users" size={18} className="md:w-[18px] md:h-[18px] w-5 h-5" />
+              <span className="text-[10px] md:text-sm">Кэпы</span>
             </TabsTrigger>
-            <TabsTrigger value="rules" className="gap-2">
-              <Icon name="BookOpen" size={18} />
-              Правила
+            <TabsTrigger value="rules" className="gap-1 md:gap-2 flex-col md:flex-row py-2 md:py-3">
+              <Icon name="BookOpen" size={18} className="md:w-[18px] md:h-[18px] w-5 h-5" />
+              <span className="text-[10px] md:text-sm">Правила</span>
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="standings" className="space-y-6">
+          <TabsContent value="standings" className="space-y-4 md:space-y-6">
             <Tabs defaultValue="east" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsList className="grid w-full grid-cols-2 mb-4 md:mb-6">
                 <TabsTrigger value="east">Восточная конференция</TabsTrigger>
                 <TabsTrigger value="west">Западная конференция</TabsTrigger>
               </TabsList>
 
               <TabsContent value="east">
+                <div className="overflow-x-auto -mx-2 md:mx-0">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -392,9 +394,11 @@ const Index = () => {
                     />
                   </CardContent>
                 </Card>
+                </div>
               </TabsContent>
 
               <TabsContent value="west">
+                <div className="overflow-x-auto -mx-2 md:mx-0">
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -412,6 +416,7 @@ const Index = () => {
                     />
                   </CardContent>
                 </Card>
+                </div>
               </TabsContent>
             </Tabs>
           </TabsContent>
