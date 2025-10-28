@@ -14,6 +14,7 @@ import RulesEditor from '@/components/admin/RulesEditor';
 import { defaultEasternTeams, defaultWesternTeams, defaultUpcomingGames, defaultPlayoffBracket, defaultRules, defaultCaptains, defaultCaptainsEmptyMessage, defaultScheduleEmptyMessage, defaultRulesEmptyMessage } from '@/components/vnhl/defaultData';
 import CaptainsEditor from '@/components/admin/CaptainsEditor';
 import { hashPassword, checkRateLimit, recordLoginAttempt, validateSession, setSecureSession, clearSecureSession, sanitizeInput } from '@/utils/security';
+import { syncToServer } from '@/utils/dataSync';
 
 const ADMIN_PASSWORD_HASH = 'c27d44b5f50e3661a8d276c4e1860676a3c47a0252fadc394f6fc66e9eadad03';
 
@@ -76,38 +77,47 @@ const Admin = () => {
 
   useEffect(() => {
     localStorage.setItem('easternTeams', JSON.stringify(easternTeams));
+    syncToServer({ easternTeams });
   }, [easternTeams]);
 
   useEffect(() => {
     localStorage.setItem('westernTeams', JSON.stringify(westernTeams));
+    syncToServer({ westernTeams });
   }, [westernTeams]);
 
   useEffect(() => {
     localStorage.setItem('upcomingGames', JSON.stringify(upcomingGames));
+    syncToServer({ upcomingGames });
   }, [upcomingGames]);
 
   useEffect(() => {
     localStorage.setItem('playoffBracket', JSON.stringify(playoffBracket));
+    syncToServer({ playoffBracket });
   }, [playoffBracket]);
 
   useEffect(() => {
     localStorage.setItem('rules', JSON.stringify(rules));
+    syncToServer({ rules });
   }, [rules]);
 
   useEffect(() => {
     localStorage.setItem('captains', JSON.stringify(captains));
+    syncToServer({ captains });
   }, [captains]);
 
   useEffect(() => {
     localStorage.setItem('captainsEmptyMessage', JSON.stringify(captainsEmptyMessage));
+    syncToServer({ captainsEmptyMessage });
   }, [captainsEmptyMessage]);
 
   useEffect(() => {
     localStorage.setItem('scheduleEmptyMessage', JSON.stringify(scheduleEmptyMessage));
+    syncToServer({ scheduleEmptyMessage });
   }, [scheduleEmptyMessage]);
 
   useEffect(() => {
     localStorage.setItem('rulesEmptyMessage', JSON.stringify(rulesEmptyMessage));
+    syncToServer({ rulesEmptyMessage });
   }, [rulesEmptyMessage]);
 
   const handleLogin = async (e: React.FormEvent) => {

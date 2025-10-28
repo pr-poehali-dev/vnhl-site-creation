@@ -28,6 +28,7 @@ import {
   defaultRulesEmptyMessage,
 } from '@/components/vnhl/defaultData';
 import Captains from '@/components/vnhl/Captains';
+import { loadFromServer } from '@/utils/dataSync';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -56,41 +57,31 @@ const Index = () => {
   const [tempIconType, setTempIconType] = useState<'lucide' | 'custom'>('lucide');
 
   useEffect(() => {
-    const loadFromLocalStorage = () => {
-      const savedEastern = localStorage.getItem('easternTeams');
-      const savedWestern = localStorage.getItem('westernTeams');
-      const savedGames = localStorage.getItem('upcomingGames');
-      const savedPlayoff = localStorage.getItem('playoffBracket');
-      const savedRules = localStorage.getItem('rules');
-      const savedCaptains = localStorage.getItem('captains');
-      const savedCaptainsEmptyMessage = localStorage.getItem('captainsEmptyMessage');
-      const savedScheduleEmptyMessage = localStorage.getItem('scheduleEmptyMessage');
-      const savedRulesEmptyMessage = localStorage.getItem('rulesEmptyMessage');
-      const savedSiteTitle = localStorage.getItem('siteTitle');
-      const savedSiteSubtitle = localStorage.getItem('siteSubtitle');
-      const savedSiteIcon = localStorage.getItem('siteIcon');
-      const savedCustomIconUrl = localStorage.getItem('customIconUrl');
-      const savedIconType = localStorage.getItem('iconType');
+    const loadData = async () => {
+      const serverData = await loadFromServer();
+      
+      if (serverData) {
+        if (serverData.easternTeams) setEasternTeams(serverData.easternTeams);
+        if (serverData.westernTeams) setWesternTeams(serverData.westernTeams);
+        if (serverData.upcomingGames) setUpcomingGames(serverData.upcomingGames);
+        if (serverData.playoffBracket) setPlayoffBracket(serverData.playoffBracket);
+        if (serverData.rules) setRules(serverData.rules);
+        if (serverData.captains) setCaptains(serverData.captains);
+        if (serverData.captainsEmptyMessage) setCaptainsEmptyMessage(serverData.captainsEmptyMessage);
+        if (serverData.scheduleEmptyMessage) setScheduleEmptyMessage(serverData.scheduleEmptyMessage);
+        if (serverData.rulesEmptyMessage) setRulesEmptyMessage(serverData.rulesEmptyMessage);
+        if (serverData.siteTitle) setSiteTitle(serverData.siteTitle);
+        if (serverData.siteSubtitle) setSiteSubtitle(serverData.siteSubtitle);
+        if (serverData.siteIcon) setSiteIcon(serverData.siteIcon);
+        if (serverData.customIconUrl) setCustomIconUrl(serverData.customIconUrl);
+        if (serverData.iconType) setIconType(serverData.iconType as 'lucide' | 'custom');
+      }
+      
       const adminAuth = sessionStorage.getItem('adminAuth');
-
-      if (savedEastern) setEasternTeams(JSON.parse(savedEastern));
-      if (savedWestern) setWesternTeams(JSON.parse(savedWestern));
-      if (savedGames) setUpcomingGames(JSON.parse(savedGames));
-      if (savedPlayoff) setPlayoffBracket(JSON.parse(savedPlayoff));
-      if (savedRules) setRules(JSON.parse(savedRules));
-      if (savedCaptains) setCaptains(JSON.parse(savedCaptains));
-      if (savedCaptainsEmptyMessage) setCaptainsEmptyMessage(JSON.parse(savedCaptainsEmptyMessage));
-      if (savedScheduleEmptyMessage) setScheduleEmptyMessage(JSON.parse(savedScheduleEmptyMessage));
-      if (savedRulesEmptyMessage) setRulesEmptyMessage(JSON.parse(savedRulesEmptyMessage));
-      if (savedSiteTitle) setSiteTitle(savedSiteTitle);
-      if (savedSiteSubtitle) setSiteSubtitle(savedSiteSubtitle);
-      if (savedSiteIcon) setSiteIcon(savedSiteIcon);
-      if (savedCustomIconUrl) setCustomIconUrl(savedCustomIconUrl);
-      if (savedIconType) setIconType(savedIconType as 'lucide' | 'custom');
       if (adminAuth === 'true') setIsAdmin(true);
     };
 
-    loadFromLocalStorage();
+    loadData();
 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'easternTeams' && e.newValue) {

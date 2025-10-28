@@ -1,0 +1,29 @@
+{
+  "tests": [
+    {
+      "name": "Получение данных сайта",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "siteTitle": "string",
+        "siteSubtitle": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Сохранение данных сайта",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "siteTitle": "Test VNHL",
+        "easternTeams": []
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
