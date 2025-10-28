@@ -12,9 +12,12 @@
       "bodyMatcher": "partial"
     },
     {
-      "name": "Сохранение данных сайта",
+      "name": "Сохранение данных с токеном",
       "method": "POST",
       "path": "/",
+      "headers": {
+        "X-Admin-Token": "c27d44b5f50e3661a8d276c4e1860676a3c47a0252fadc394f6fc66e9eadad03"
+      },
       "body": {
         "siteTitle": "Test VNHL",
         "easternTeams": []
@@ -22,6 +25,19 @@
       "expectedStatus": 200,
       "expectedBody": {
         "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Отказ без токена",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "siteTitle": "Hacked"
+      },
+      "expectedStatus": 403,
+      "expectedBody": {
+        "error": "string"
       },
       "bodyMatcher": "partial"
     }
